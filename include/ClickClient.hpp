@@ -3,5 +3,5 @@
 
 class ClickClient {
 public:
-  bool clicked(SDL_Event*);
+  virtual bool clicked(SDL_Event*) = 0;
 };

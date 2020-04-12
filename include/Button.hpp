@@ -14,6 +14,6 @@ public:
 	~Button();
 	void draw();
 	SDL_Rect getBound();
-	bool clicked(SDL_Event*);
+	bool clicked(SDL_Event*) override;
 
 };

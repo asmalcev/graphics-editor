@@ -36,6 +36,7 @@ SDL_Rect Window::getBound() {
 
 void Window::addButton(int x, int y, int w, int h, const Style* btnStyle, char* imgPath) {
   btns.push_back(Button(screen, pos.x + x, pos.y + y, w, h, btnStyle, imgPath));
+  clickerListeners.push_back(&btns[btns.size() - 1]);
 }
 
 bool Window::clicked(SDL_Event* event) {
@@ -43,8 +44,8 @@ bool Window::clicked(SDL_Event* event) {
 		pos.x <= event->button.x && pos.x + pos.w >= event->button.x &&
 		pos.y <= event->button.y && pos.y + pos.h >= event->button.y
 	) {
-		for (size_t i = 0; i < btns.size(); i++) {
-      if (btns[i].clicked(event)) break;
+		for (size_t i = 0; i < clickerListeners.size(); i++) {
+      if (clickerListeners[i]->clicked(event)) break;
     }
     return true;
 	}

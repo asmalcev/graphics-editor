@@ -4,6 +4,8 @@
 #include "Window.hpp"
 #include "MainWindow.hpp"
 
+#include <iostream>
+
 MainWindow::MainWindow(SDL_Surface* screenSurface) {
   screen = screenSurface;
 
@@ -15,7 +17,9 @@ MainWindow::~MainWindow() {
 }
 
 void MainWindow::clicked(SDL_Event* event) {
-	for (size_t i = 0; i < windows.size(); i++) {
+	std::cout << "main window clicked\n";
+	for (size_t i = 0; i < clickerListeners.size(); i++) {
+		std::cout << i << std::endl;
 		if (clickerListeners[i]->clicked(event)) break;
 	}
 }
@@ -28,7 +32,7 @@ void MainWindow::draw() {
 
 void MainWindow::addWindow(Window window) {
   windows.push_back(window);
-	clickerListeners.push_back(&window);
+	clickerListeners.push_back(&windows[windows.size() - 1]);
 };
 
 Window& MainWindow::getWindow(size_t index) {
