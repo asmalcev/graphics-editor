@@ -1,13 +1,11 @@
 #include <iostream>
 #include <SDL/SDL.h>
 #include <SDL/SDL_ttf.h>
-#include <vector>
 #include "graphicsEditor.hpp"
 #include "../../../libs/SDL_draw-1.2.13/include/SDL_draw.h"
-#include "window.hpp"
-#include "observer.hpp"
+#include "Window.hpp"
+#include "MainWindow.hpp"
 #include "utils.hpp"
-#include "button.hpp"
 
 
 /*
@@ -19,27 +17,34 @@
 int main(int argc, char *argv[]) {
  	SDL_Surface* screen;
  	SDL_Event event;
-	Observer obs;
 
  	if (SDL_Init(SDL_INIT_VIDEO)) {
+		std::cout << "Can't init SDL" << std::endl;
 		return 1;
  	}
-	if (TTF_Init())
+	if (TTF_Init()){
+		std::cout << "Can't init TTF" << std::endl;
  		return 1;
+	}
 
  	screen = SDL_SetVideoMode(window_width, window_height, 32, SDL_ANYFORMAT);
  	if (!screen) {
+		std::cout << "Can't create screen surface" << std::endl;
 		SDL_Quit();
 		return 1;
  	}
-	SDL_WM_SetCaption("GraphicsEditor", "GE");
-	SDL_WM_SetIcon(SDL_LoadBMP("../public/GE.bmp"), NULL);
- 	Draw_FillRect(screen, 0, 0, window_width, window_height, backgroundColor);
 
- 	obs.addSubscriber(Window(screen, 12, 12, 224, 224, mainColor));
- 	obs.addSubscriber(Window(screen, 12, 248, 224, 340, mainColor));
- 	obs.addSubscriber(Window(screen, 248, 12, 740, 576, mainColor));
-	// Button Bush(screen, 80, 80, 80, 40, SDL_MapRGB(screen->format, 0,0,0), "btn");
+	MainWindow mainWindow(screen);
+
+
+ 	mainWindow.addWindow(Window(screen, 0, 0, 216, 216, &windowStyle));
+	mainWindow.getWindow(0).addButton(0, 0, 32, 32, &btnStyle, (char*) "../public/pencil.bmp");
+	mainWindow.getWindow(0).addButton(32, 0, 32, 32, &btnStyle, (char*) "../public/erraser.bmp");
+	mainWindow.getWindow(0).addButton(64, 0, 32, 32, &btnStyle, (char*) "../public/filler.bmp");
+	mainWindow.getWindow(0).addButton(96, 0, 32, 32, &btnStyle, (char*) "../public/circle.bmp");
+	mainWindow.getWindow(0).addButton(128, 0, 32, 32, &btnStyle, (char*) "../public/square.bmp");
+ 	mainWindow.addWindow(Window(screen, 0, 216, 216, 372, &windowStyle));
+ 	mainWindow.addWindow(Window(screen, 216, 0, 772, 588, &windowStyle));
 
  	SDL_Flip(screen);
  	while(SDL_WaitEvent(&event)){
@@ -49,16 +54,14 @@ int main(int argc, char *argv[]) {
 				SDL_Quit();
  	   		return 0;
 			case SDL_MOUSEBUTTONDOWN:
-				obs.callClickedWindow(&event);
+				mainWindow.clicked(&event);
+				break;
+			case SDL_MOUSEMOTION:
+				// mainWindow
 				break;
 		}
 
     switch (event.key.keysym.sym) {
-			case SDLK_ESCAPE:
-				TTF_Quit();
-    		SDL_Quit();
-    		return 0;
-
 			default:
 				break;
     }

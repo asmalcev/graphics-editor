@@ -1,7 +1,18 @@
 #pragma once
 
-Uint32 mainColor = 0xFFFFFF;
-Uint32 backgroundColor = 0x455A64;
+typedef struct {
+  Sint16 margin;
+  Sint16 padding;
+  Uint32 color;
+  Uint16 shadowOffset;
+  Uint32 shadowColor;
+} Style;
 
-const int window_width = 1000;
-const int window_height = 600;
+extern const Uint32 mainColor;
+extern const Uint32 backgroundColor;
+
+extern const Uint16 window_width;
+extern const Uint16 window_height;
+
+extern const Style windowStyle;
+extern const Style btnStyle;
