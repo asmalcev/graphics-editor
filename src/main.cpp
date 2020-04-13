@@ -37,14 +37,14 @@ int main(int argc, char *argv[]) {
 	MainWindow mainWindow(screen);
 
 
- 	mainWindow.addWindow(Window(screen, 0, 0, 216, 216, &windowStyle));
-	mainWindow.getWindow(0).addButton(0, 0, 32, 32, &btnStyle, (char*) "../public/pencil.bmp");
-	mainWindow.getWindow(0).addButton(32, 0, 32, 32, &btnStyle, (char*) "../public/erraser.bmp");
-	mainWindow.getWindow(0).addButton(64, 0, 32, 32, &btnStyle, (char*) "../public/filler.bmp");
-	mainWindow.getWindow(0).addButton(96, 0, 32, 32, &btnStyle, (char*) "../public/circle.bmp");
-	mainWindow.getWindow(0).addButton(128, 0, 32, 32, &btnStyle, (char*) "../public/square.bmp");
- 	mainWindow.addWindow(Window(screen, 0, 216, 216, 372, &windowStyle));
- 	mainWindow.addWindow(Window(screen, 216, 0, 772, 588, &windowStyle));
+ 	mainWindow.addWindow(new Window(screen, 0, 0, 216, 216, &windowStyle));
+	mainWindow.getWindow(0)->addButton(0, 0, 32, 32, &btnStyle, (char*) "../public/pencil.bmp");
+	mainWindow.getWindow(0)->addButton(32, 0, 32, 32, &btnStyle, (char*) "../public/erraser.bmp");
+	mainWindow.getWindow(0)->addButton(64, 0, 32, 32, &btnStyle, (char*) "../public/filler.bmp");
+	mainWindow.getWindow(0)->addButton(96, 0, 32, 32, &btnStyle, (char*) "../public/circle.bmp");
+	mainWindow.getWindow(0)->addButton(128, 0, 32, 32, &btnStyle, (char*) "../public/square.bmp");
+ 	mainWindow.addWindow(new Window(screen, 0, 216, 216, 372, &windowStyle));
+ 	mainWindow.addWindow(new Window(screen, 216, 0, 772, 588, &windowStyle));
 
  	SDL_Flip(screen);
  	while(SDL_WaitEvent(&event)){

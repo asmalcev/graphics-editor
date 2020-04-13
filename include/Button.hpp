@@ -1,7 +1,6 @@
 #pragma once
-#include "ClickClient.hpp"
 
-class Button : public ClickClient {
+class Button {
 
 protected:
 	SDL_Rect pos;
@@ -14,6 +13,6 @@ public:
 	~Button();
 	void draw();
 	SDL_Rect getBound();
-	bool clicked(SDL_Event*) override;
+	bool clicked(SDL_Event*);
 
 };

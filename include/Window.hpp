@@ -1,16 +1,14 @@
 #pragma once
 #include <vector>
-#include "ClickClient.hpp"
 #include "Button.hpp"
 
-class Window : public ClickClient {
+class Window {
 
 protected:
 	SDL_Rect pos;
 	SDL_Surface* screen;
 	const Style* style;
 	std::vector<Button> btns;
-	std::vector<ClickClient*> clickerListeners;
 
 public:
 	Window(SDL_Surface*,int,int,int,int,const Style*);
@@ -18,6 +16,6 @@ public:
 	void draw();
 	SDL_Rect getBound();
 	void addButton(int,int,int,int,const Style*,char*);
-	bool clicked(SDL_Event* event) override;
+	bool clicked(SDL_Event* event);
 	
 };

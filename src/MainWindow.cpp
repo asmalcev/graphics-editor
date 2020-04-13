@@ -17,10 +17,8 @@ MainWindow::~MainWindow() {
 }
 
 void MainWindow::clicked(SDL_Event* event) {
-	std::cout << "main window clicked\n";
-	for (size_t i = 0; i < clickerListeners.size(); i++) {
-		std::cout << i << std::endl;
-		if (clickerListeners[i]->clicked(event)) break;
+	for (size_t i = 0; i < windows.size(); i++) {
+		if (windows[i]->clicked(event)) break;
 	}
 }
 
@@ -30,11 +28,10 @@ void MainWindow::draw() {
  	Draw_FillRect(screen, 0, 0, window_width, window_height, backgroundColor);
 }
 
-void MainWindow::addWindow(Window window) {
+void MainWindow::addWindow(Window* window) {
   windows.push_back(window);
-	clickerListeners.push_back(&windows[windows.size() - 1]);
 };
 
-Window& MainWindow::getWindow(size_t index) {
+Window* MainWindow::getWindow(size_t index) {
 	return windows[index];
 }

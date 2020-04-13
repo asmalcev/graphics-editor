@@ -3,6 +3,8 @@
 #include "Button.hpp"
 #include "Window.hpp"
 
+#include <iostream>
+
 Window::Window(SDL_Surface* screenSurface, int x, int y, int w, int h, const Style* windowStyle) {
   style = windowStyle;
   screen = screenSurface;
@@ -36,16 +38,16 @@ SDL_Rect Window::getBound() {
 
 void Window::addButton(int x, int y, int w, int h, const Style* btnStyle, char* imgPath) {
   btns.push_back(Button(screen, pos.x + x, pos.y + y, w, h, btnStyle, imgPath));
-  clickerListeners.push_back(&btns[btns.size() - 1]);
 }
+
 
 bool Window::clicked(SDL_Event* event) {
   if (
 		pos.x <= event->button.x && pos.x + pos.w >= event->button.x &&
 		pos.y <= event->button.y && pos.y + pos.h >= event->button.y
 	) {
-		for (size_t i = 0; i < clickerListeners.size(); i++) {
-      if (clickerListeners[i]->clicked(event)) break;
+		for (size_t i = 0; i < btns.size(); i++) {
+      if (btns[i].clicked(event)) break;
     }
     return true;
 	}
