@@ -1,3 +1,4 @@
 #pragma once
 
-void renderText(SDL_Surface*, SDL_Rect, char*, int);
+SDL_Color translate_color(Uint32 int_color);
+void renderText(SDL_Surface*, SDL_Rect, char*, int, Uint32);

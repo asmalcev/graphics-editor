@@ -2,6 +2,7 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_ttf.h>
 #include "graphicsEditor.hpp"
+#include "Controller.hpp"
 #include "../../../libs/SDL_draw-1.2.13/include/SDL_draw.h"
 #include "Window.hpp"
 #include "MainWindow.hpp"
@@ -20,17 +21,20 @@ int main(int argc, char *argv[]) {
 
  	if (SDL_Init(SDL_INIT_VIDEO)) {
 		std::cout << "Can't init SDL" << std::endl;
+		delete Controller::getController();
 		return 1;
  	}
 	if (TTF_Init()){
 		std::cout << "Can't init TTF" << std::endl;
+		delete Controller::getController();
  		return 1;
 	}
 
- 	screen = SDL_SetVideoMode(window_width, window_height, 32, SDL_ANYFORMAT);
+ 	screen = SDL_SetVideoMode(window_width, window_height, window_scrdepth, SDL_ANYFORMAT);
  	if (!screen) {
 		std::cout << "Can't create screen surface" << std::endl;
 		SDL_Quit();
+		delete Controller::getController();
 		return 1;
  	}
 
@@ -38,11 +42,11 @@ int main(int argc, char *argv[]) {
 
 
  	mainWindow.addWindow(new Window(screen, 0, 0, 216, 216, &windowStyle));
-	mainWindow.getWindow(0)->addButton(0, 0, 32, 32, &btnStyle, (char*) "../public/pencil.bmp");
-	mainWindow.getWindow(0)->addButton(32, 0, 32, 32, &btnStyle, (char*) "../public/erraser.bmp");
-	mainWindow.getWindow(0)->addButton(64, 0, 32, 32, &btnStyle, (char*) "../public/filler.bmp");
-	mainWindow.getWindow(0)->addButton(96, 0, 32, 32, &btnStyle, (char*) "../public/circle.bmp");
-	mainWindow.getWindow(0)->addButton(128, 0, 32, 32, &btnStyle, (char*) "../public/square.bmp");
+	mainWindow.getWindow(0)->addButton(0, 0, 32, 32, &btnStyle, (char*) "../public/pencil.bmp", (char*) "Pencil");
+	mainWindow.getWindow(0)->addButton(32, 0, 32, 32, &btnStyle, (char*) "../public/erraser.bmp", (char*) "Eraser");
+	mainWindow.getWindow(0)->addButton(64, 0, 32, 32, &btnStyle, (char*) "../public/filler.bmp", (char*) "Filler");
+	mainWindow.getWindow(0)->addButton(96, 0, 32, 32, &btnStyle, (char*) "../public/circle.bmp", (char*) "Circle");
+	mainWindow.getWindow(0)->addButton(128, 0, 32, 32, &btnStyle, (char*) "../public/square.bmp", (char*) "Square");
  	mainWindow.addWindow(new Window(screen, 0, 216, 216, 372, &windowStyle));
  	mainWindow.addWindow(new Window(screen, 216, 0, 772, 588, &windowStyle));
 
@@ -52,12 +56,13 @@ int main(int argc, char *argv[]) {
 			case SDL_QUIT:
 				TTF_Quit();
 				SDL_Quit();
+				delete Controller::getController();
  	   		return 0;
 			case SDL_MOUSEBUTTONDOWN:
 				mainWindow.clicked(&event);
 				break;
 			case SDL_MOUSEMOTION:
-				// mainWindow
+				mainWindow.hovered(&event);
 				break;
 		}
 
@@ -69,5 +74,6 @@ int main(int argc, char *argv[]) {
 
 	TTF_Quit();
  	SDL_Quit();
+	delete Controller::getController();
  	return 2;
 }

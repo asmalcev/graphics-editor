@@ -3,6 +3,7 @@
 #include "graphicsEditor.hpp"
 #include "Window.hpp"
 #include "MainWindow.hpp"
+#include "Controller.hpp"
 
 #include <iostream>
 
@@ -18,8 +19,15 @@ MainWindow::~MainWindow() {
 
 void MainWindow::clicked(SDL_Event* event) {
 	for (size_t i = 0; i < windows.size(); i++) {
-		if (windows[i]->clicked(event)) break;
+		if (windows[i]->clicked(event)) return;
 	}
+}
+
+void MainWindow::hovered(SDL_Event* event) {
+	for (size_t i = 0; i < windows.size(); i++) {
+		if (windows[i]->hovered(event)) return;
+	}
+	Controller::getController()->clearHoveredObj();
 }
 
 void MainWindow::draw() {

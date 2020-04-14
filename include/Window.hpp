@@ -15,7 +15,8 @@ public:
 	Window() {}
 	void draw();
 	SDL_Rect getBound();
-	void addButton(int,int,int,int,const Style*,char*);
-	bool clicked(SDL_Event* event);
+	void addButton(int,int,int,int,const Style*,char*,char*);
+	bool clicked(SDL_Event*);
+	bool hovered(SDL_Event*);
 	
 };

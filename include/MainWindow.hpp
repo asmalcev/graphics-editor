@@ -11,6 +11,7 @@ public:
   ~MainWindow();
   void addWindow(Window*);
   void clicked(SDL_Event*);
+  void hovered(SDL_Event*);
   void draw();
   Window* getWindow(size_t); 
 
