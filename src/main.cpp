@@ -47,6 +47,9 @@ int main(int argc, char *argv[]) {
 	mainWindow.getWindow(0)->addButton(64, 0, 32, 32, &btnStyle, (char*) "../public/filler.bmp", (char*) "Filler");
 	mainWindow.getWindow(0)->addButton(96, 0, 32, 32, &btnStyle, (char*) "../public/circle.bmp", (char*) "Circle");
 	mainWindow.getWindow(0)->addButton(128, 0, 32, 32, &btnStyle, (char*) "../public/square.bmp", (char*) "Square");
+	mainWindow.getWindow(0)->addButton(160, 0, 32, 32, &btnStyle, (char*) "../public/line.bmp", (char*) "Line");
+	mainWindow.getWindow(0)->addTextInput(96, 160, 40, 32, &textInputStyle, (char*) "Line width");
+	mainWindow.getWindow(0)->addText(12, 172, (char*) "Line width:", 16, 0x333333);
  	mainWindow.addWindow(new Window(screen, 0, 216, 216, 372, &windowStyle));
  	mainWindow.addWindow(new Window(screen, 216, 0, 772, 588, &windowStyle));
 
@@ -63,6 +66,10 @@ int main(int argc, char *argv[]) {
 				break;
 			case SDL_MOUSEMOTION:
 				mainWindow.hovered(&event);
+				break;
+			case SDL_KEYDOWN:
+				if (Controller::getController()->waitingForInput())
+					Controller::getController()->readInput(&event);
 				break;
 		}
 

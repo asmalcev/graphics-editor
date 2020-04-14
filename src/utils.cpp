@@ -20,7 +20,7 @@ SDL_Color translate_color(Uint32 int_color) {
 }
 
 
-void renderText(SDL_Surface* screen, SDL_Rect dst, char* message, int fontSize, Uint32 color) {
+void renderText(SDL_Surface* screen, SDL_Rect dst, const char* message, int fontSize, Uint32 color) {
   SDL_Surface* textSurface;
 	TTF_Font* fnt;
 

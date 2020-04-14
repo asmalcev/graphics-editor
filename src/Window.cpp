@@ -1,7 +1,7 @@
 #include "../../../libs/SDL_draw-1.2.13/include/SDL_draw.h"
 #include "graphicsEditor.hpp"
-#include "Button.hpp"
 #include "Window.hpp"
+#include "utils.hpp"
 
 #include <iostream>
 
@@ -36,19 +36,40 @@ SDL_Rect Window::getBound() {
   return pos;
 }
 
-void Window::addButton(int x, int y, int w, int h, const Style* btnStyle, char* imgPath, char* tooltip) {
+void Window::addButton(
+  int x,
+  int y,
+  int w,
+  int h,
+  const Style* btnStyle,
+  char* imgPath,
+  char* tooltip
+) {
   btns.push_back(Button(screen, pos.x + x, pos.y + y, w, h, btnStyle, imgPath, tooltip));
 }
 
+void Window::addTextInput(
+  int x,
+  int y,
+  int w,
+  int h,
+  const Style* textInputStyle,
+  char* tooltip
+) {
+  textInputs.push_back(TextInput(screen, pos.x + x, pos.y + y, w, h, textInputStyle, tooltip));
+}
 
 bool Window::clicked(SDL_Event* event) {
   if (
 		pos.x <= event->button.x && pos.x + pos.w >= event->button.x &&
 		pos.y <= event->button.y && pos.y + pos.h >= event->button.y
 	) {
-		for (size_t i = 0; i < btns.size(); i++) {
+		for (size_t i = 0; i < btns.size(); i++)
       if (btns[i].clicked(event)) break;
-    }
+
+    for (size_t i = 0; i < textInputs.size(); i++)
+      if (textInputs[i].clicked(event)) break;
+
     return true;
 	}
   return false;
@@ -61,6 +82,14 @@ bool Window::hovered(SDL_Event* event) {
 	) {
 		for (size_t i = 0; i < btns.size(); i++)
       if (btns[i].hovered(event)) return true;
+    
+    for (size_t i = 0; i < textInputs.size(); i++)
+      if (textInputs[i].hovered(event)) return true;
 	}
   return false;
+}
+
+void Window::addText(int x, int y, char* text, int fontSize, Uint32 color) {
+  SDL_Rect textPos = {(Sint16) (pos.x + x),(Sint16) (pos.y + y), 0, 0};
+  renderText(screen, textPos, text, fontSize, color);
 }
