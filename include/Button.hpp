@@ -4,8 +4,7 @@
 #include "Hovered.hpp"
 
 class Button : public Input, public Focused, public Hovered {
-
-protected:
+private:
 	char* img;
 
 public:

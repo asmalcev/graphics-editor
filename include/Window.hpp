@@ -1,7 +1,6 @@
 #pragma once
-#include <vector>
-#include "Button.hpp"
-#include "TextInput.hpp"
+#include <SDL/SDL.h>
+#include "utils.hpp"
 
 class Window {
 
@@ -9,18 +8,16 @@ protected:
 	SDL_Rect pos;
 	SDL_Surface* screen;
 	const Style* style;
-	std::vector<Button> btns;
-	std::vector<TextInput> textInputs;
 
 public:
-	Window(SDL_Surface*,int,int,int,int,const Style*);
-	Window() {}
-	void draw();
-	SDL_Rect getBound();
-	void addButton(int,int,int,int,const Style*,char*,char*);
-	void addTextInput(int,int,int,int,const Style*,char*);
-	void addText(int,int,char*,int,Uint32);
-	bool clicked(SDL_Event*);
-	bool hovered(SDL_Event*);
+	virtual void draw() = 0;
+	virtual SDL_Rect getBound() = 0;
+	virtual bool clicked(SDL_Event*) = 0;
+	virtual bool hovered(SDL_Event*) = 0;
+
+	void addText(int x, int y, char* text, int fontSize, Uint32 color) {
+		SDL_Rect textPos = {(Sint16) (pos.x + x),(Sint16) (pos.y + y), 0, 0};
+		renderText(screen, textPos, text, fontSize, color);
+	}
 	
 };

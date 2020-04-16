@@ -1,29 +1,31 @@
 #include "../../../libs/SDL_draw-1.2.13/include/SDL_draw.h"
 #include "graphicsEditor.hpp"
-#include "Window.hpp"
-#include "utils.hpp"
+#include "Toolbar.hpp"
 
-#include <iostream>
-
-Window::Window(SDL_Surface* screenSurface, int x, int y, int w, int h, const Style* windowStyle) {
-  style = windowStyle;
-  screen = screenSurface;
+Toolbar::Toolbar(
+  SDL_Surface* screenSurface,
+  int x,
+  int y,
+  int w,
+  int h,
+  const Style* windowStyle
+) {
+  this->style = windowStyle;
+  this->screen = screenSurface;
 
   pos.x = x + style->margin;
   pos.y = y + style->margin;
   pos.w = w - style->margin;
   pos.h = h - style->margin;
-  
-  Window::draw();
 }
 
-void Window::draw() {
-  Draw_FillRect(screen, 
+void Toolbar::draw() {
+  Draw_FillRect(this->screen,
     (Sint16) (pos.x + style->shadowOffset), 
     (Sint16) (pos.y + pos.h),
-    pos.w, style->shadowOffset, 
+    pos.w, style->shadowOffset,
     style->shadowColor);
-  Draw_FillRect(screen,
+  Draw_FillRect(this->screen,
     (Sint16) (pos.x + pos.w),
     (Sint16) (pos.y + style->shadowOffset),
     style->shadowOffset,
@@ -32,11 +34,11 @@ void Window::draw() {
   Draw_FillRect(screen, pos.x, pos.y, pos.w, pos.h, style->color);
 }
 
-SDL_Rect Window::getBound() {
+SDL_Rect Toolbar::getBound() {
   return pos;
 }
 
-void Window::addButton(
+void Toolbar::addButton(
   int x,
   int y,
   int w,
@@ -48,18 +50,19 @@ void Window::addButton(
   btns.push_back(Button(screen, pos.x + x, pos.y + y, w, h, btnStyle, imgPath, tooltip));
 }
 
-void Window::addTextInput(
+void Toolbar::addTextInput(
   int x,
   int y,
   int w,
   int h,
   const Style* textInputStyle,
-  char* tooltip
+  char* tooltip,
+  std::string value
 ) {
-  textInputs.push_back(TextInput(screen, pos.x + x, pos.y + y, w, h, textInputStyle, tooltip));
+  textInputs.push_back(TextInput(screen, pos.x + x, pos.y + y, w, h, textInputStyle, tooltip, value));
 }
 
-bool Window::clicked(SDL_Event* event) {
+bool Toolbar::clicked(SDL_Event* event) {
   if (
 		pos.x <= event->button.x && pos.x + pos.w >= event->button.x &&
 		pos.y <= event->button.y && pos.y + pos.h >= event->button.y
@@ -75,7 +78,7 @@ bool Window::clicked(SDL_Event* event) {
   return false;
 }
 
-bool Window::hovered(SDL_Event* event) {
+bool Toolbar::hovered(SDL_Event* event) {
   if (
 		pos.x <= event->button.x && pos.x + pos.w >= event->button.x &&
 		pos.y <= event->button.y && pos.y + pos.h >= event->button.y
@@ -87,9 +90,4 @@ bool Window::hovered(SDL_Event* event) {
       if (textInputs[i].hovered(event)) return true;
 	}
   return false;
-}
-
-void Window::addText(int x, int y, char* text, int fontSize, Uint32 color) {
-  SDL_Rect textPos = {(Sint16) (pos.x + x),(Sint16) (pos.y + y), 0, 0};
-  renderText(screen, textPos, text, fontSize, color);
 }

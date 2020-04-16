@@ -9,7 +9,7 @@ protected:
   std::string value;
 
 public:
-  TextInput(SDL_Surface*,int,int,int,int,const Style*,char*);
+  TextInput(SDL_Surface*,int,int,int,int,const Style*,char*,std::string);
   ~TextInput();
   void draw();
   SDL_Rect getBound();
@@ -18,7 +18,6 @@ public:
 	void drawClicked();
 	void toggleFocusedDraw() override;
 	void toggleHoveredDraw() override;
-	void drawTooltip();
   void changeValue(std::string);
   std::string getValue();
 

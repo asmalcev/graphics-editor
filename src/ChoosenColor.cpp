@@ -1,25 +1,19 @@
-#include "../../../libs/SDL_draw-1.2.13/include/SDL_draw.h"
-#include <SDL/SDL_ttf.h>
-#include <iostream>
-#include "graphicsEditor.hpp"
-#include "TextInput.hpp"
 #include "Controller.hpp"
-#include "utils.hpp"
+#include "ChoosenColor.hpp"
 
-TextInput::TextInput(
+ChoosenColor::ChoosenColor(
   SDL_Surface* screenSurface,
   int x,
   int y,
   int w,
   int h,
   const Style* inputStyle,
-  char* tooltip,
-  std::string holderValue
+  Uint32 color,
+  char* tooltip
 ) {
   screen = screenSurface;
   style = inputStyle;
   tooltipText = tooltip;
-  value = holderValue;
 
   pos.x = x + style->margin;
   pos.y = y + style->margin;
@@ -31,6 +25,7 @@ TextInput::TextInput(
   textWidth += 6;
 
   isHovered = isFocused = false;
+  colorValue = color;
   
   tmpForTooltip = SDL_CreateRGBSurface(SDL_HWSURFACE |
     SDL_DOUBLEBUF, textWidth, textHeight, window_scrdepth,
@@ -39,9 +34,7 @@ TextInput::TextInput(
   this->draw();
 }
 
-TextInput::~TextInput() {}
-
-void TextInput::draw() {
+void ChoosenColor::draw() {
   Draw_FillRect(screen, 
     (Sint16) (pos.x + style->shadowOffset),
     (Sint16) (pos.y + pos.h),
@@ -53,44 +46,11 @@ void TextInput::draw() {
     style->shadowOffset,
     (Uint16) (pos.h - style->shadowOffset),
     style->shadowColor);
-  Draw_FillRect(screen, pos.x, pos.y, pos.w, pos.h, mainColor);
+  Draw_FillRect(screen, pos.x, pos.y, pos.w, pos.h, colorValue);
   Draw_Rect(screen, pos.x, pos.y, pos.w, pos.h, style->color);
-  SDL_Rect textPos = {(Sint16) (pos.x + 3), pos.y, pos.w, pos.h};
-  renderText(screen, textPos, value.c_str(), 16, 0x333333);
 }
 
-void TextInput::drawClicked() {
-  Draw_Rect(screen, pos.x, pos.y, pos.w, pos.h, focusedColor);
-}
-
-SDL_Rect TextInput::getBound() {
-  return pos;
-}
-
-bool TextInput::clicked(SDL_Event* event) {
-  if (
-		pos.x <= event->button.x && pos.x + pos.w >= event->button.x &&
-		pos.y <= event->button.y && pos.y + pos.h >= event->button.y
-	) {
-    toggleFocusedDraw();
-    Controller::getController()->changeFocus(this);
-    Controller::getController()->focusTextInput(this);
-    return true;
-	}
-  return false;
-}
-
-void TextInput::toggleFocusedDraw() {
-  if (isFocused) {
-    draw();
-  } else {
-    drawClicked();
-  }
-  SDL_Flip(screen);
-  isFocused = !isFocused;
-}
-
-bool TextInput::hovered(SDL_Event* event) {
+bool ChoosenColor::hovered(SDL_Event* event) {
   if (
 		pos.x <= event->button.x && pos.x + pos.w >= event->button.x &&
 		pos.y <= event->button.y && pos.y + pos.h >= event->button.y
@@ -101,24 +61,13 @@ bool TextInput::hovered(SDL_Event* event) {
   return false;
 }
 
-void TextInput::toggleHoveredDraw() {
+void ChoosenColor::toggleHoveredDraw() {
   if (isHovered) {
     SDL_Rect tooltipPos = {pos.x, (Sint16) (pos.y - textHeight - 1), 100, 20};
     SDL_BlitSurface(tmpForTooltip, NULL, screen, &tooltipPos);
   } else {
-    this->drawTooltip(); 
+   drawTooltip(); 
   }
   SDL_Flip(screen);
   isHovered = !isHovered;
-}
-
-void TextInput::changeValue(std::string newValue) {
-  value = newValue;
-  draw();
-  drawClicked();
-  SDL_Flip(screen);
-}
-
-std::string TextInput::getValue() {
-  return value;
 }

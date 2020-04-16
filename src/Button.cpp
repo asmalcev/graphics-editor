@@ -15,23 +15,27 @@ Button::Button(
   char* imgPath,
   char* tooltip
 ) {
+  screen = screenSurface;
   style = btnStyle;
+  tooltipText = tooltip;
+
   pos.x = x + style->margin;
   pos.y = y + style->margin;
   pos.w = w - style->margin;
   pos.h = h - style->margin;
-  screen = screenSurface;
-  img = imgPath;
-  tooltipText = tooltip;
-  isHovered = isFocused = false;
+  
   TTF_SizeText(TTF_OpenFont("../public/Ubuntu.ttf", style->tooltipTextFontSize), tooltipText ,&textWidth, &textHeight);
   textHeight += 2;
   textWidth += 6;
+  
+  img = imgPath;
+  isHovered = isFocused = false;
+  
   tmpForTooltip = SDL_CreateRGBSurface(SDL_HWSURFACE |
-		SDL_DOUBLEBUF, textWidth, textHeight, window_scrdepth,
-		screen->format->Rmask, screen->format->Gmask,
-		screen->format->Bmask, screen->format->Amask);
-  Button::draw();
+    SDL_DOUBLEBUF, textWidth, textHeight, window_scrdepth,
+    screen->format->Rmask, screen->format->Gmask,
+    screen->format->Bmask, screen->format->Amask);
+  this->draw();
 }
 
 Button::~Button() {}
