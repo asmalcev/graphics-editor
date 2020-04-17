@@ -14,15 +14,15 @@ private:
   ChoosenColor* m_choosenColor;
 
 public:
-  Palette(SDL_Surface*,int,int,int,int,const Style*);
+  Palette(SDL_Surface*,int,int,int,int,const style_s*);
   Palette();
   void draw() override;
 	SDL_Rect getBound() override;
 	bool clicked(SDL_Event*) override;
 	bool hovered(SDL_Event*) override;
-  void addColorInput(int,int,int,int,const Style*,Uint32,char*);
-  void addTextInput(int,int,int,int,const Style*,char*,std::string);
-  void setChoosenColor(int,int,int,int,const Style*,Uint32,char*);
-  void setButton(int,int,int,int,const Style*,char*,char*);
+  void addColorInput(int,int,int,int,const style_s*,Uint32,char*);
+  void addTextInput(int,int,int,int,const style_s*,char*,std::string,ValueClasses);
+  void setChoosenColor(int,int,int,int,const style_s*,Uint32,char*);
+  void setButton(int,int,int,int,const style_s*,char*,char*);
 
 };

@@ -6,7 +6,7 @@ class Canvas : public Window {
 private:
 
 public:
-  Canvas(SDL_Surface*,int,int,int,int,const Style*);
+  Canvas(SDL_Surface*,int,int,int,int,const style_s*);
   void draw() override;
 	SDL_Rect getBound() override;
 	bool clicked(SDL_Event*) override;

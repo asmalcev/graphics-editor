@@ -11,10 +11,10 @@ private:
 	std::vector<TextInput> textInputs;
 
 public:
-  Toolbar(SDL_Surface*,int,int,int,int,const Style*);
+  Toolbar(SDL_Surface*,int,int,int,int,const style_s*);
   ~Toolbar();
-  void addButton(int,int,int,int,const Style*,char*,char*);
-	void addTextInput(int,int,int,int,const Style*,char*,std::string);
+  void addButton(int,int,int,int,const style_s*,char*,char*);
+	void addTextInput(int,int,int,int,const style_s*,char*,std::string,ValueClasses);
   void draw() override;
 	SDL_Rect getBound() override;
 	bool clicked(SDL_Event*) override;

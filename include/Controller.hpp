@@ -6,7 +6,7 @@
 
 class Controller {
 private:
-  static Controller* controller;
+  static Controller* m_controller;
   Focused* focusedObj;
   Hovered* hoveredObj;
   TextInput* focusedTextInput;
@@ -15,10 +15,11 @@ private:
 
 public:
   static Controller* getController() {
-    if(!controller)           
-      controller = new Controller();
-    return controller;
+    if(!m_controller)           
+      m_controller = new Controller();
+    return m_controller;
   }
+  
   void changeFocus(Focused*);
   bool changeHover(Hovered*);
   void clearHoveredObj();

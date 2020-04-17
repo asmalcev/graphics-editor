@@ -11,7 +11,7 @@ ColorInput::ColorInput(
   int y,
   int w,
   int h,
-  const Style* inputStyle,
+  const style_s* inputStyle,
   Uint32 color,
   char* tooltip
 ) {

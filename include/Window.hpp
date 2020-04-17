@@ -7,7 +7,7 @@ class Window {
 protected:
 	SDL_Rect pos;
 	SDL_Surface* screen;
-	const Style* style;
+	const style_s* style;
 
 public:
 	virtual void draw() = 0;

@@ -7,9 +7,10 @@
 class TextInput : public Input, public Focused, public Hovered {
 protected:
   std::string value;
+  ValueClasses valueClass;
 
 public:
-  TextInput(SDL_Surface*,int,int,int,int,const Style*,char*,std::string);
+  TextInput(SDL_Surface*,int,int,int,int,const style_s*,char*,std::string,ValueClasses);
   ~TextInput();
   void draw();
   SDL_Rect getBound();
@@ -20,5 +21,6 @@ public:
 	void toggleHoveredDraw() override;
   void changeValue(std::string);
   std::string getValue();
+  ValueClasses getValueClass();
 
 };

@@ -12,14 +12,16 @@ TextInput::TextInput(
   int y,
   int w,
   int h,
-  const Style* inputStyle,
+  const style_s* inputStyle,
   char* tooltip,
-  std::string holderValue
+  std::string holderValue,
+  ValueClasses className
 ) {
   screen = screenSurface;
   style = inputStyle;
   tooltipText = tooltip;
   value = holderValue;
+  valueClass = className;
 
   pos.x = x + style->margin;
   pos.y = y + style->margin;
@@ -61,6 +63,7 @@ void TextInput::draw() {
 
 void TextInput::drawClicked() {
   Draw_Rect(screen, pos.x, pos.y, pos.w, pos.h, focusedColor);
+  Draw_Rect(screen, pos.x + 1, pos.y + 1, pos.w - 2, pos.h - 2, focusedColor);
 }
 
 SDL_Rect TextInput::getBound() {
@@ -121,4 +124,8 @@ void TextInput::changeValue(std::string newValue) {
 
 std::string TextInput::getValue() {
   return value;
+}
+
+ValueClasses TextInput::getValueClass() {
+  return valueClass;
 }

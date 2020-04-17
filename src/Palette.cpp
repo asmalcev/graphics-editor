@@ -7,7 +7,7 @@ Palette::Palette(
   int y,
   int w,
   int h,
-  const Style* windowStyle
+  const style_s* windowStyle
 ) {
   style = windowStyle;
   screen = screenSurface;
@@ -75,7 +75,7 @@ void Palette::addColorInput(
   int y,
   int w,
   int h,
-  const Style* colorStyle,
+  const style_s* colorStyle,
   Uint32 color,
   char* tooltip
 ) {
@@ -87,7 +87,7 @@ void Palette::setChoosenColor(
   int y,
   int w,
   int h,
-  const Style* colorStyle,
+  const style_s* colorStyle,
   Uint32 color,
   char* tooltip
   ) {
@@ -100,9 +100,10 @@ void Palette::addTextInput(
   int y,
   int w,
   int h,
-  const Style* textInputStyle,
+  const style_s* textInputStyle,
   char* tooltip,
-  std::string value
+  std::string value,
+  ValueClasses className
 ) {
-  textInputs.push_back(TextInput(screen, pos.x + x, pos.y + y, w, h, textInputStyle, tooltip, value));
+  textInputs.push_back(TextInput(screen, pos.x + x, pos.y + y, w, h, textInputStyle, tooltip, value, className));
 }

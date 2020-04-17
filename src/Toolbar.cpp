@@ -8,7 +8,7 @@ Toolbar::Toolbar(
   int y,
   int w,
   int h,
-  const Style* windowStyle
+  const style_s* windowStyle
 ) {
   this->style = windowStyle;
   this->screen = screenSurface;
@@ -43,7 +43,7 @@ void Toolbar::addButton(
   int y,
   int w,
   int h,
-  const Style* btnStyle,
+  const style_s* btnStyle,
   char* imgPath,
   char* tooltip
 ) {
@@ -55,11 +55,12 @@ void Toolbar::addTextInput(
   int y,
   int w,
   int h,
-  const Style* textInputStyle,
+  const style_s* textInputStyle,
   char* tooltip,
-  std::string value
+  std::string value,
+  ValueClasses className
 ) {
-  textInputs.push_back(TextInput(screen, pos.x + x, pos.y + y, w, h, textInputStyle, tooltip, value));
+  textInputs.push_back(TextInput(screen, pos.x + x, pos.y + y, w, h, textInputStyle, tooltip, value, className));
 }
 
 bool Toolbar::clicked(SDL_Event* event) {

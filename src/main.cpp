@@ -3,6 +3,7 @@
 #include <SDL/SDL_ttf.h>
 #include <vector>
 #include "graphicsEditor.hpp"
+#include "DataModel.hpp"
 #include "Controller.hpp"
 #include "../../../libs/SDL_draw-1.2.13/include/SDL_draw.h"
 #include "MainWindow.hpp"
@@ -47,6 +48,8 @@ int main(int argc, char *argv[]) {
 	colors.push_back(ColorInputData(0x9C27B0, (char*) "#9C27B0"));
 	colors.push_back(ColorInputData(0xE91E63, (char*) "#E91E63"));
 	colors.push_back(ColorInputData(0xF44336, (char*) "#F44336"));
+	colors.push_back(ColorInputData(0xFFFFFF, (char*) "#FFFFFF"));
+	colors.push_back(ColorInputData(0x000000, (char*) "#000000"));
 	// colors.push_back(ColorInputData(0x, (char*) "#"));
 
  	if (SDL_Init(SDL_INIT_VIDEO)) {
@@ -73,23 +76,43 @@ int main(int argc, char *argv[]) {
 	mainWindow.getPalette()->draw();
 	mainWindow.getCanvas()->draw();
 
-	mainWindow.getToolbar()->addButton(0, 0, 32, 32, &btnStyle, (char*) "../public/pencil.bmp", (char*) "Pencil");
-	mainWindow.getToolbar()->addButton(32, 0, 32, 32, &btnStyle, (char*) "../public/erraser.bmp", (char*) "Eraser");
-	mainWindow.getToolbar()->addButton(64, 0, 32, 32, &btnStyle, (char*) "../public/filler.bmp", (char*) "Filler");
-	mainWindow.getToolbar()->addButton(96, 0, 32, 32, &btnStyle, (char*) "../public/circle.bmp", (char*) "Circle");
-	mainWindow.getToolbar()->addButton(128, 0, 32, 32, &btnStyle, (char*) "../public/square.bmp", (char*) "Square");
-	mainWindow.getToolbar()->addButton(160, 0, 32, 32, &btnStyle, (char*) "../public/line.bmp", (char*) "Line");
-	mainWindow.getToolbar()->addTextInput(96, 160, 36, 32, &textInputStyle, (char*) "Line width", "2");
-	mainWindow.getToolbar()->addText(12, 172, (char*) "Line width:", 16, 0x333333);
-	mainWindow.getToolbar()->addText(140, 172, (char*) "px", 16, 0x333333);
+	mainWindow.getToolbar()->addButton(
+		0, 0, 32, 32, &btnStyle, (char*) "../public/pencil.bmp", (char*) "Pencil");
+	mainWindow.getToolbar()->addButton(
+		32, 0, 32, 32, &btnStyle, (char*) "../public/erraser.bmp", (char*) "Eraser");
+	mainWindow.getToolbar()->addButton(
+		64, 0, 32, 32, &btnStyle, (char*) "../public/filler.bmp", (char*) "Filler");
+	mainWindow.getToolbar()->addButton(
+		96, 0, 32, 32, &btnStyle, (char*) "../public/circle.bmp", (char*) "Circle");
+	mainWindow.getToolbar()->addButton(
+		128, 0, 32, 32, &btnStyle, (char*) "../public/square.bmp", (char*) "Square");
+	mainWindow.getToolbar()->addButton(
+		160, 0, 32, 32, &btnStyle, (char*) "../public/line.bmp", (char*) "Line");
 
-	mainWindow.getPalette()->addText(12, 12, (char*) "Choosen color", 16, 0x333333);
-	mainWindow.getPalette()->addText(12, 44, (char*) "Set RGB color", 16, 0x333333);
-	mainWindow.getPalette()->addText(12, 108, (char*) "Color presets", 16, 0x333333);
-	mainWindow.getPalette()->addTextInput(0, 64, 48, 32, &textInputStyle, (char*) "R value", "255");
-	mainWindow.getPalette()->addTextInput(48, 64, 48, 32, &textInputStyle, (char*) "G value", "235");
-	mainWindow.getPalette()->addTextInput(96, 64, 48, 32, &textInputStyle, (char*) "B value", "59");
+	mainWindow.getToolbar()->addTextInput(
+		96, 160, 36, 32, &textInputStyle, (char*) "Line width", std::to_string(DataModel::getData()->getLineWidth()), ValueClasses::Line);
+
+	mainWindow.getToolbar()->addText(
+		12, 172, (char*) "Line width:", 16, 0x333333);
+	mainWindow.getToolbar()->addText(
+		140, 172, (char*) "px", 16, 0x333333);
+
+	mainWindow.getPalette()->addText(
+		12, 12, (char*) "Choosen color", 16, 0x333333);
+	mainWindow.getPalette()->addText(
+		12, 44, (char*) "Set RGB color", 16, 0x333333);
+	mainWindow.getPalette()->addText(
+		12, 108, (char*) "Color presets", 16, 0x333333);
+
+	mainWindow.getPalette()->addTextInput(
+		0, 64, 48, 32, &textInputStyle, (char*) "R value", std::to_string(DataModel::getData()->getRvalue()), ValueClasses::RGB);
+	mainWindow.getPalette()->addTextInput(
+		48, 64, 48, 32, &textInputStyle, (char*) "G value", std::to_string(DataModel::getData()->getGvalue()), ValueClasses::RGB);
+	mainWindow.getPalette()->addTextInput(
+		96, 64, 48, 32, &textInputStyle, (char*) "B value", std::to_string(DataModel::getData()->getBvalue()), ValueClasses::RGB);
+
 	mainWindow.getPalette()->setChoosenColor(160, 0, 32, 32, &colorInputStyle, 0xFFEB3B, (char*) "#FFEB3B");
+
 	for (size_t i = 0; i < colors.size(); i++) {
 		mainWindow.getPalette()->addColorInput((i % 6) * 32, 128 + (i / 6) * 32, 32, 32, &colorInputStyle, colors[i].color, colors[i].value);
 	}

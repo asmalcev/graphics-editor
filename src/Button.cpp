@@ -11,7 +11,7 @@ Button::Button(
   int y,
   int w,
   int h,
-  const Style* btnStyle,
+  const style_s* btnStyle,
   char* imgPath,
   char* tooltip
 ) {
@@ -58,6 +58,7 @@ void Button::draw() {
 
 void Button::drawClicked() {
   Draw_Rect(screen, pos.x, pos.y, pos.w, pos.h, style->color);
+  Draw_Rect(screen, pos.x + 1, pos.y + 1, pos.w - 2, pos.h - 2, style->color);
 }
 
 SDL_Rect Button::getBound() {

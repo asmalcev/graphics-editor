@@ -7,7 +7,7 @@ protected:
   Uint32 colorValue;
 
 public:
-  ChoosenColor(SDL_Surface*,int,int,int,int,const Style*,Uint32,char*);
+  ChoosenColor(SDL_Surface*,int,int,int,int,const style_s*,Uint32,char*);
   ChoosenColor() {};
   ~ChoosenColor() {};
   void draw() override;

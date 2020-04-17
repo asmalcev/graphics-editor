@@ -7,7 +7,7 @@ Canvas::Canvas(
   int y,
   int w,
   int h,
-  const Style* windowStyle
+  const style_s* windowStyle
 ) {
   style = windowStyle;
   screen = screenSurface;

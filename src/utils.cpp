@@ -19,7 +19,6 @@ SDL_Color translate_color(Uint32 int_color) {
 	return color;
 }
 
-
 void renderText(SDL_Surface* screen, SDL_Rect dst, const char* message, int fontSize, Uint32 color) {
   SDL_Surface* textSurface;
 	TTF_Font* fnt;
@@ -34,4 +33,16 @@ void renderText(SDL_Surface* screen, SDL_Rect dst, const char* message, int font
 	}
 
   TTF_CloseFont(fnt);
+}
+
+char* IntToHexChars(int value) {
+	char* result = new char[7];
+	sprintf(result, "#%X", value);
+	return result;
+}
+
+char* IntToChars(int value) {
+	char* result = new char[3];
+	sprintf(result, "%d", value);
+	return result;
 }
