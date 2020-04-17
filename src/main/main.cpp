@@ -3,10 +3,10 @@
 #include <SDL/SDL_ttf.h>
 #include <vector>
 #include "graphicsEditor.hpp"
-#include "DataModel.hpp"
-#include "Controller.hpp"
+#include "Model/DataModel.hpp"
+#include "Controller/Controller.hpp"
 #include "../../../libs/SDL_draw-1.2.13/include/SDL_draw.h"
-#include "MainWindow.hpp"
+#include "View/MainWindow.hpp"
 #include "utils.hpp"
 
 /*
@@ -105,11 +105,11 @@ int main(int argc, char *argv[]) {
 		12, 108, (char*) "Color presets", 16, 0x333333);
 
 	mainWindow.getPalette()->addTextInput(
-		0, 64, 48, 32, &textInputStyle, (char*) "R value", std::to_string(DataModel::getData()->getRvalue()), ValueClasses::RGB);
+		0, 64, 48, 32, &textInputStyle, (char*) "R value", std::to_string(DataModel::getData()->getRvalue()), ValueClasses::R);
 	mainWindow.getPalette()->addTextInput(
-		48, 64, 48, 32, &textInputStyle, (char*) "G value", std::to_string(DataModel::getData()->getGvalue()), ValueClasses::RGB);
+		48, 64, 48, 32, &textInputStyle, (char*) "G value", std::to_string(DataModel::getData()->getGvalue()), ValueClasses::G);
 	mainWindow.getPalette()->addTextInput(
-		96, 64, 48, 32, &textInputStyle, (char*) "B value", std::to_string(DataModel::getData()->getBvalue()), ValueClasses::RGB);
+		96, 64, 48, 32, &textInputStyle, (char*) "B value", std::to_string(DataModel::getData()->getBvalue()), ValueClasses::B);
 
 	mainWindow.getPalette()->setChoosenColor(160, 0, 32, 32, &colorInputStyle, 0xFFEB3B, (char*) "#FFEB3B");
 

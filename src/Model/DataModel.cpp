@@ -1,4 +1,5 @@
 #include "DataModel.hpp"
+#include "main/utils.hpp"
 
 DataModel::DataModel() {
   lineWidth = 2;
@@ -27,14 +28,17 @@ Uint32 DataModel::getChoosenColor() {
 
 void DataModel::setRvalue(int newValue) {
   Rvalue = newValue;
+  choosenColor = createRGB(Rvalue, Gvalue, Bvalue);
 }
 
 void DataModel::setGvalue(int newValue) {
   Gvalue = newValue;
+  choosenColor = createRGB(Rvalue, Gvalue, Bvalue);
 }
 
 void DataModel::setBvalue(int newValue) {
   Bvalue = newValue;
+  choosenColor = createRGB(Rvalue, Gvalue, Bvalue);
 }
 
 int DataModel::getRvalue() {

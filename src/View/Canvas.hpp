@@ -1,6 +1,6 @@
 #pragma once
-#include "graphicsEditor.hpp"
-#include "Window.hpp"
+#include "main/graphicsEditor.hpp"
+#include "Interfaces/Window.hpp"
 
 class Canvas : public Window {
 private:

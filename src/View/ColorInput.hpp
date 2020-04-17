@@ -1,7 +1,6 @@
 #pragma once
 #include "ChoosenColor.hpp"
-#include "Focused.hpp"
-#include "Hovered.hpp"
+#include "Interfaces/Focused.hpp"
 
 class ColorInput : public ChoosenColor, public Focused {
 private:

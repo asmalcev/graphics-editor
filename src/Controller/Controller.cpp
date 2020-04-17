@@ -1,4 +1,5 @@
 #include "Controller.hpp"
+#include "Model/DataModel.hpp"
 
 #include <iostream>
 
@@ -52,19 +53,31 @@ void Controller::readInput(SDL_Event* event) {
     value /= 10;
   }
 
-  if (sym >= 48 && sym <= 57)
+  if (sym >= 48 && sym <= 57) {
     value = value * 10 + sym - 48;
+  }
 
   switch (focusedTextInput->getValueClass()) {
     case ValueClasses::Line:
       if (value == 0) value = 1;
       if (value > 20) value = 20;
       break;
-    case ValueClasses::RGB:
+
+    case ValueClasses::R:
       if (value > 255) value = 255;
+      DataModel::getData()->setRvalue(value);
+      break;
+    
+    case ValueClasses::G:
+      if (value > 255) value = 255;
+      DataModel::getData()->setGvalue(value);
+      break;
+
+    case ValueClasses::B:
+      if (value > 255) value = 255;
+      DataModel::getData()->setBvalue(value);
       break;
   }
-  
 
   focusedTextInput->changeValue(std::to_string(value));
 }

@@ -2,8 +2,8 @@
 #include <SDL/SDL.h>
 #include "../../../libs/SDL_draw-1.2.13/include/SDL_draw.h"
 #include <SDL/SDL_ttf.h>
-#include "graphicsEditor.hpp"
-#include "utils.hpp"
+#include "main/graphicsEditor.hpp"
+#include "main/utils.hpp"
 
 class Input {
 protected:

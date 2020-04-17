@@ -1,8 +1,8 @@
 #pragma once
 #include <SDL/SDL.h>
-#include "Focused.hpp"
-#include "Hovered.hpp"
-#include "TextInput.hpp"
+#include "Interfaces/Focused.hpp"
+#include "Interfaces/Hovered.hpp"
+#include "View/TextInput.hpp"
 
 class Controller {
 private:

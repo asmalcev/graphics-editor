@@ -1,6 +1,6 @@
 #pragma once
 #include <SDL/SDL.h>
-#include "utils.hpp"
+#include "main/utils.hpp"
 
 class Window {
 

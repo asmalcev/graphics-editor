@@ -1,7 +1,6 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_ttf.h>
 #include "graphicsEditor.hpp"
-#include "Window.hpp"
 #include "utils.hpp"
 
 SDL_Color translate_color(Uint32 int_color) {
@@ -45,4 +44,8 @@ char* IntToChars(int value) {
 	char* result = new char[3];
 	sprintf(result, "%d", value);
 	return result;
+}
+
+Uint32 createRGB(int r, int g, int b) {  
+  return ((r & 0xff) << 16) + ((g & 0xff) << 8) + (b & 0xff);
 }

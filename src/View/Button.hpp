@@ -1,7 +1,7 @@
 #pragma once
-#include "Input.hpp"
-#include "Focused.hpp"
-#include "Hovered.hpp"
+#include "Interfaces/Input.hpp"
+#include "Interfaces/Focused.hpp"
+#include "Interfaces/Hovered.hpp"
 
 class Button : public Input, public Focused, public Hovered {
 private:

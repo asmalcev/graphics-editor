@@ -1,4 +1,4 @@
-#include "Controller.hpp"
+#include "Controller/Controller.hpp"
 #include "ChoosenColor.hpp"
 
 ChoosenColor::ChoosenColor(
@@ -70,4 +70,9 @@ void ChoosenColor::toggleHoveredDraw() {
   }
   SDL_Flip(screen);
   isHovered = !isHovered;
+}
+
+void ChoosenColor::setChoosenColor(Uint32 newValue) {
+  colorValue = newValue;
+  SDL_Flip(screen);
 }

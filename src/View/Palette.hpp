@@ -1,8 +1,8 @@
 #pragma once
 #include <vector>
 #include <istream>
-#include "graphicsEditor.hpp"
-#include "Window.hpp"
+#include "main/graphicsEditor.hpp"
+#include "Interfaces/Window.hpp"
 #include "ColorInput.hpp"
 #include "ChoosenColor.hpp"
 #include "TextInput.hpp"

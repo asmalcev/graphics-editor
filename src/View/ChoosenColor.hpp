@@ -1,6 +1,6 @@
 #pragma once
-#include "Input.hpp"
-#include "Hovered.hpp"
+#include "Interfaces/Input.hpp"
+#include "Interfaces/Hovered.hpp"
 
 class ChoosenColor : public Input, public Hovered {
 protected:
@@ -13,5 +13,6 @@ public:
   void draw() override;
   void toggleHoveredDraw() override;
   bool hovered(SDL_Event*);
+  void setChoosenColor(Uint32);
 
 };

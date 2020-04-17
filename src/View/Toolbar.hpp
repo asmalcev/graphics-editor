@@ -1,7 +1,7 @@
 #pragma once
 #include <iostream>
 #include <vector>
-#include "Window.hpp"
+#include "Interfaces/Window.hpp"
 #include "Button.hpp"
 #include "TextInput.hpp"
 

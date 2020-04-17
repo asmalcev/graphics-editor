@@ -1,37 +1,34 @@
 #include "../../../libs/SDL_draw-1.2.13/include/SDL_draw.h"
 #include <SDL/SDL_ttf.h>
-#include <iostream>
-#include "graphicsEditor.hpp"
-#include "TextInput.hpp"
-#include "Controller.hpp"
-#include "utils.hpp"
+#include "main/graphicsEditor.hpp"
+#include "Button.hpp"
+#include "Controller/Controller.hpp"
+#include "main/utils.hpp"
 
-TextInput::TextInput(
+Button::Button(
   SDL_Surface* screenSurface,
   int x,
   int y,
   int w,
   int h,
-  const style_s* inputStyle,
-  char* tooltip,
-  std::string holderValue,
-  ValueClasses className
+  const style_s* btnStyle,
+  char* imgPath,
+  char* tooltip
 ) {
   screen = screenSurface;
-  style = inputStyle;
+  style = btnStyle;
   tooltipText = tooltip;
-  value = holderValue;
-  valueClass = className;
 
   pos.x = x + style->margin;
   pos.y = y + style->margin;
   pos.w = w - style->margin;
   pos.h = h - style->margin;
-
+  
   TTF_SizeText(TTF_OpenFont("../public/Ubuntu.ttf", style->tooltipTextFontSize), tooltipText ,&textWidth, &textHeight);
   textHeight += 2;
   textWidth += 6;
-
+  
+  img = imgPath;
   isHovered = isFocused = false;
   
   tmpForTooltip = SDL_CreateRGBSurface(SDL_HWSURFACE |
@@ -41,9 +38,9 @@ TextInput::TextInput(
   this->draw();
 }
 
-TextInput::~TextInput() {}
+Button::~Button() {}
 
-void TextInput::draw() {
+void Button::draw() {
   Draw_FillRect(screen, 
     (Sint16) (pos.x + style->shadowOffset),
     (Sint16) (pos.y + pos.h),
@@ -55,35 +52,32 @@ void TextInput::draw() {
     style->shadowOffset,
     (Uint16) (pos.h - style->shadowOffset),
     style->shadowColor);
-  Draw_FillRect(screen, pos.x, pos.y, pos.w, pos.h, mainColor);
+  Draw_FillRect(screen, pos.x, pos.y, pos.w, pos.h, style->color);
+  SDL_BlitSurface(SDL_LoadBMP(img), NULL, screen, &pos);
+}
+
+void Button::drawClicked() {
   Draw_Rect(screen, pos.x, pos.y, pos.w, pos.h, style->color);
-  SDL_Rect textPos = {(Sint16) (pos.x + 3), pos.y, pos.w, pos.h};
-  renderText(screen, textPos, value.c_str(), 16, 0x333333);
+  Draw_Rect(screen, pos.x + 1, pos.y + 1, pos.w - 2, pos.h - 2, style->color);
 }
 
-void TextInput::drawClicked() {
-  Draw_Rect(screen, pos.x, pos.y, pos.w, pos.h, focusedColor);
-  Draw_Rect(screen, pos.x + 1, pos.y + 1, pos.w - 2, pos.h - 2, focusedColor);
-}
-
-SDL_Rect TextInput::getBound() {
+SDL_Rect Button::getBound() {
   return pos;
 }
 
-bool TextInput::clicked(SDL_Event* event) {
+bool Button::clicked(SDL_Event* event) {
   if (
 		pos.x <= event->button.x && pos.x + pos.w >= event->button.x &&
 		pos.y <= event->button.y && pos.y + pos.h >= event->button.y
 	) {
     toggleFocusedDraw();
     Controller::getController()->changeFocus(this);
-    Controller::getController()->focusTextInput(this);
     return true;
 	}
   return false;
 }
 
-void TextInput::toggleFocusedDraw() {
+void Button::toggleFocusedDraw() {
   if (isFocused) {
     draw();
   } else {
@@ -93,7 +87,7 @@ void TextInput::toggleFocusedDraw() {
   isFocused = !isFocused;
 }
 
-bool TextInput::hovered(SDL_Event* event) {
+bool Button::hovered(SDL_Event* event) {
   if (
 		pos.x <= event->button.x && pos.x + pos.w >= event->button.x &&
 		pos.y <= event->button.y && pos.y + pos.h >= event->button.y
@@ -104,28 +98,30 @@ bool TextInput::hovered(SDL_Event* event) {
   return false;
 }
 
-void TextInput::toggleHoveredDraw() {
+void Button::toggleHoveredDraw() {
   if (isHovered) {
     SDL_Rect tooltipPos = {pos.x, (Sint16) (pos.y - textHeight - 1), 100, 20};
     SDL_BlitSurface(tmpForTooltip, NULL, screen, &tooltipPos);
   } else {
-    this->drawTooltip(); 
+   drawTooltip(); 
   }
   SDL_Flip(screen);
   isHovered = !isHovered;
 }
 
-void TextInput::changeValue(std::string newValue) {
-  value = newValue;
-  draw();
-  drawClicked();
-  SDL_Flip(screen);
-}
-
-std::string TextInput::getValue() {
-  return value;
-}
-
-ValueClasses TextInput::getValueClass() {
-  return valueClass;
+void Button::drawTooltip() {
+  SDL_Rect tooltipPos = {pos.x, (Sint16) (pos.y - textHeight - 1), (Uint16) textWidth, (Uint16) textHeight};
+  SDL_BlitSurface(screen, &tooltipPos, tmpForTooltip, NULL);
+  Draw_FillRect(screen,
+    tooltipPos.x,
+    tooltipPos.y,
+    tooltipPos.w,
+    tooltipPos.h, style->tooltipColor);
+  Draw_Rect(screen,
+    tooltipPos.x,
+    tooltipPos.y,
+    tooltipPos.w,
+    tooltipPos.h, 0x333333);
+  tooltipPos.x = (Sint16) (tooltipPos.x + 2);
+  renderText(screen, tooltipPos, tooltipText, style->tooltipTextFontSize, style->tooltipTextColor);
 }

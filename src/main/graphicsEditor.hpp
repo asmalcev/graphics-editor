@@ -10,7 +10,7 @@ struct style_s {
   int tooltipTextFontSize;
 };
 
-enum class ValueClasses {Line, RGB};
+enum ValueClasses {Line, R, G, B};
 
 constexpr Uint32 mainColor = 0xFFFFFF;
 constexpr Uint32 backgroundColor = 0x455A64;

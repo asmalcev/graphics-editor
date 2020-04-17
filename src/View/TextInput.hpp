@@ -1,8 +1,8 @@
 #pragma once
 #include <iostream>
-#include "Input.hpp"
-#include "Focused.hpp"
-#include "Hovered.hpp"
+#include "Interfaces/Input.hpp"
+#include "Interfaces/Focused.hpp"
+#include "Interfaces/Hovered.hpp"
 
 class TextInput : public Input, public Focused, public Hovered {
 protected:

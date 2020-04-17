@@ -1,9 +1,9 @@
 #include "../../../libs/SDL_draw-1.2.13/include/SDL_draw.h"
 #include <SDL/SDL_ttf.h>
-#include "graphicsEditor.hpp"
+#include "main/graphicsEditor.hpp"
 #include "ColorInput.hpp"
-#include "Controller.hpp"
-#include "utils.hpp"
+#include "Controller/Controller.hpp"
+#include "main/utils.hpp"
 
 ColorInput::ColorInput(
   SDL_Surface* screenSurface,

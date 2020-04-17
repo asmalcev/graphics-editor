@@ -1,6 +1,6 @@
 #pragma once
 #include <SDL/SDL.h>
-#include "Tool.hpp"
+#include "Interfaces/Tool.hpp"
 
 class DataModel {
 private:

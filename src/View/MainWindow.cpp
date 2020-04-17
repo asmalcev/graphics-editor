@@ -1,8 +1,8 @@
 #include <vector>
 #include "../../../libs/SDL_draw-1.2.13/include/SDL_draw.h"
-#include "graphicsEditor.hpp"
+#include "main/graphicsEditor.hpp"
 #include "MainWindow.hpp"
-#include "Controller.hpp"
+#include "Controller/Controller.hpp"
 
 #include <iostream>
 
