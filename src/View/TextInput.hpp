@@ -3,14 +3,14 @@
 #include "Interfaces/Input.hpp"
 #include "Interfaces/Focused.hpp"
 #include "Interfaces/Hovered.hpp"
+#include "Interfaces/Observer.hpp"
 
-class TextInput : public Input, public Focused, public Hovered {
+class TextInput : public Input, public Focused, public Hovered, public Observer {
 protected:
   std::string value;
-  ValueClasses valueClass;
 
 public:
-  TextInput(SDL_Surface*,int,int,int,int,const style_s*,char*,std::string,ValueClasses);
+  TextInput(SDL_Surface*,int,int,int,int,const style_s*,char*,std::string,ComponentName);
   ~TextInput();
   void draw();
   SDL_Rect getBound();
@@ -21,6 +21,6 @@ public:
 	void toggleHoveredDraw() override;
   void changeValue(std::string);
   std::string getValue();
-  ValueClasses getValueClass();
+  void notify() override;
 
 };

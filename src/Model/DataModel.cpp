@@ -7,7 +7,6 @@ DataModel::DataModel() {
   Rvalue = 255;
   Gvalue = 235;
   Bvalue = 59;
-  m_tool = NULL;
 }
 
 void DataModel::setLineWidth(int newValue) {
@@ -20,6 +19,12 @@ int DataModel::getLineWidth() {
 
 void DataModel::setChoosenColor(Uint32 newValue) {
   choosenColor = newValue;
+  SDL_Color color = translate_color(choosenColor);
+  Rvalue = color.r;
+  Gvalue = color.g;
+  Bvalue = color.b;
+  
+  notifyColorListeners();
 }
 
 Uint32 DataModel::getChoosenColor() {
@@ -29,16 +34,19 @@ Uint32 DataModel::getChoosenColor() {
 void DataModel::setRvalue(int newValue) {
   Rvalue = newValue;
   choosenColor = createRGB(Rvalue, Gvalue, Bvalue);
+  notifyColorListeners();
 }
 
 void DataModel::setGvalue(int newValue) {
   Gvalue = newValue;
   choosenColor = createRGB(Rvalue, Gvalue, Bvalue);
+  notifyColorListeners();
 }
 
 void DataModel::setBvalue(int newValue) {
   Bvalue = newValue;
   choosenColor = createRGB(Rvalue, Gvalue, Bvalue);
+  notifyColorListeners();
 }
 
 int DataModel::getRvalue() {
@@ -53,12 +61,14 @@ int DataModel::getBvalue() {
   return Bvalue;
 }
 
-void DataModel::chooseTool(Tool* newTool) {
-  m_tool = newTool;
+void DataModel::addColorListener(Observer* newListener) {
+  colorListeners.push_back(newListener);
 }
 
-Tool* DataModel::getTool() {
-  return m_tool;
+void DataModel::notifyColorListeners() {
+  for (unsigned i = 0; i < colorListeners.size(); i++) {
+    colorListeners[i]->notify();
+  }
 }
 
 DataModel* DataModel::m_dataModel = 0;

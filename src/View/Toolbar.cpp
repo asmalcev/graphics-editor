@@ -45,9 +45,10 @@ void Toolbar::addButton(
   int h,
   const style_s* btnStyle,
   char* imgPath,
-  char* tooltip
+  char* tooltip,
+  ComponentName name
 ) {
-  btns.push_back(Button(screen, pos.x + x, pos.y + y, w, h, btnStyle, imgPath, tooltip));
+  btns.push_back(Button(screen, pos.x + x, pos.y + y, w, h, btnStyle, imgPath, tooltip, name));
 }
 
 void Toolbar::addTextInput(
@@ -58,7 +59,7 @@ void Toolbar::addTextInput(
   const style_s* textInputStyle,
   char* tooltip,
   std::string value,
-  ValueClasses className
+  ComponentName className
 ) {
   textInputs.push_back(TextInput(screen, pos.x + x, pos.y + y, w, h, textInputStyle, tooltip, value, className));
 }

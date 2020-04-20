@@ -36,7 +36,7 @@ void renderText(SDL_Surface* screen, SDL_Rect dst, const char* message, int font
 
 char* IntToHexChars(int value) {
 	char* result = new char[7];
-	sprintf(result, "#%X", value);
+	sprintf(result, "#%06X", value);
 	return result;
 }
 

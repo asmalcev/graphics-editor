@@ -13,11 +13,13 @@ ColorInput::ColorInput(
   int h,
   const style_s* inputStyle,
   Uint32 color,
-  char* tooltip
+  char* tooltip,
+  ComponentName className
 ) {
   screen = screenSurface;
   style = inputStyle;
   tooltipText = tooltip;
+  name = className;
 
   pos.x = x + style->margin;
   pos.y = y + style->margin;
@@ -45,6 +47,7 @@ bool ColorInput::clicked(SDL_Event* event) {
 	) {
     toggleFocusedDraw();
     Controller::getController()->changeFocus(this);
+    Controller::getController()->clickColorInput(this);
     return true;
 	}
   return false;
@@ -52,4 +55,8 @@ bool ColorInput::clicked(SDL_Event* event) {
 
 void ColorInput::toggleFocusedDraw() {
   isFocused = !isFocused;
+}
+
+Uint32 ColorInput::getColorValue() {
+  return colorValue;
 }

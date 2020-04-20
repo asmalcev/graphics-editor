@@ -77,9 +77,10 @@ void Palette::addColorInput(
   int h,
   const style_s* colorStyle,
   Uint32 color,
-  char* tooltip
+  char* tooltip,
+  ComponentName name
 ) {
-  colors.push_back(ColorInput(screen, pos.x + x, pos.y + y, w, h, colorStyle, color, tooltip));
+  colors.push_back(ColorInput(screen, pos.x + x, pos.y + y, w, h, colorStyle, color, tooltip, name));
 }
 
 void Palette::setChoosenColor(
@@ -89,10 +90,15 @@ void Palette::setChoosenColor(
   int h,
   const style_s* colorStyle,
   Uint32 color,
-  char* tooltip
+  char* tooltip,
+  ComponentName name
   ) {
   if (m_choosenColor != NULL) delete[] m_choosenColor;
-  m_choosenColor = new ChoosenColor(screen, pos.x + x, pos.y + y, w, h, colorStyle, color, tooltip);
+  m_choosenColor = new ChoosenColor(screen, pos.x + x, pos.y + y, w, h, colorStyle, color, tooltip, name);
+}
+
+ChoosenColor* Palette::getChoosenColor() {
+  return m_choosenColor;
 }
 
 void Palette::addTextInput(
@@ -103,7 +109,11 @@ void Palette::addTextInput(
   const style_s* textInputStyle,
   char* tooltip,
   std::string value,
-  ValueClasses className
+  ComponentName className
 ) {
   textInputs.push_back(TextInput(screen, pos.x + x, pos.y + y, w, h, textInputStyle, tooltip, value, className));
+}
+
+TextInput* Palette::getTextInput(size_t index) {
+  return &textInputs[index];
 }

@@ -13,6 +13,7 @@ protected:
 	char* tooltipText;
   bool isFocused, isHovered;
 	int textWidth, textHeight;
+  ComponentName name;
 
 public:
   virtual void draw() = 0;
@@ -36,6 +37,10 @@ public:
       tooltipPos.h, 0x333333);
     tooltipPos.x = (Sint16) (tooltipPos.x + 2);
     renderText(screen, tooltipPos, tooltipText, style->tooltipTextFontSize, style->tooltipTextColor);
+  }
+
+  ComponentName getComponentName() {
+    return name;
   }
 
 };

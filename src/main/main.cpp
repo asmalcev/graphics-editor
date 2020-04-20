@@ -10,9 +10,11 @@
 #include "utils.hpp"
 
 /*
+
 	export CFLAGS="`sdl-config --cflags` -I../../../libs/SDL_draw-1.2.13/include"
 	export LIBS="`sdl-config --libs` ../../../libs/SDL_draw-1.2.13/src/.libs/libSDL_draw.a"
-	g++ *.cpp -Wall $CFLAGS $LIBS -lSDL -lSDL_ttf -lSDL_draw -I ../include/ && ./a.out && rm a.out
+	g++ main/*.cpp Controller/*.cpp Model/*.cpp View/*.cpp -Wall $CFLAGS $LIBS -lSDL -lSDL_ttf -lSDL_draw -I ./  && ./a.out && rm a.out
+	
 */
 
 class ColorInputData {
@@ -77,20 +79,20 @@ int main(int argc, char *argv[]) {
 	mainWindow.getCanvas()->draw();
 
 	mainWindow.getToolbar()->addButton(
-		0, 0, 32, 32, &btnStyle, (char*) "../public/pencil.bmp", (char*) "Pencil");
+		0, 0, 32, 32, &btnStyle, (char*) "../public/pencil.bmp", (char*) "Pencil", ComponentName::None);
 	mainWindow.getToolbar()->addButton(
-		32, 0, 32, 32, &btnStyle, (char*) "../public/erraser.bmp", (char*) "Eraser");
+		32, 0, 32, 32, &btnStyle, (char*) "../public/erraser.bmp", (char*) "Eraser", ComponentName::None);
 	mainWindow.getToolbar()->addButton(
-		64, 0, 32, 32, &btnStyle, (char*) "../public/filler.bmp", (char*) "Filler");
+		64, 0, 32, 32, &btnStyle, (char*) "../public/filler.bmp", (char*) "Filler", ComponentName::None);
 	mainWindow.getToolbar()->addButton(
-		96, 0, 32, 32, &btnStyle, (char*) "../public/circle.bmp", (char*) "Circle");
+		96, 0, 32, 32, &btnStyle, (char*) "../public/circle.bmp", (char*) "Circle", ComponentName::None);
 	mainWindow.getToolbar()->addButton(
-		128, 0, 32, 32, &btnStyle, (char*) "../public/square.bmp", (char*) "Square");
+		128, 0, 32, 32, &btnStyle, (char*) "../public/square.bmp", (char*) "Square", ComponentName::None);
 	mainWindow.getToolbar()->addButton(
-		160, 0, 32, 32, &btnStyle, (char*) "../public/line.bmp", (char*) "Line");
+		160, 0, 32, 32, &btnStyle, (char*) "../public/line.bmp", (char*) "Line", ComponentName::None);
 
 	mainWindow.getToolbar()->addTextInput(
-		96, 160, 36, 32, &textInputStyle, (char*) "Line width", std::to_string(DataModel::getData()->getLineWidth()), ValueClasses::Line);
+		96, 160, 36, 32, &textInputStyle, (char*) "Line width", std::to_string(DataModel::getData()->getLineWidth()), ComponentName::Line);
 
 	mainWindow.getToolbar()->addText(
 		12, 172, (char*) "Line width:", 16, 0x333333);
@@ -105,16 +107,20 @@ int main(int argc, char *argv[]) {
 		12, 108, (char*) "Color presets", 16, 0x333333);
 
 	mainWindow.getPalette()->addTextInput(
-		0, 64, 48, 32, &textInputStyle, (char*) "R value", std::to_string(DataModel::getData()->getRvalue()), ValueClasses::R);
+		0, 64, 48, 32, &textInputStyle, (char*) "R value", std::to_string(DataModel::getData()->getRvalue()), ComponentName::R);
 	mainWindow.getPalette()->addTextInput(
-		48, 64, 48, 32, &textInputStyle, (char*) "G value", std::to_string(DataModel::getData()->getGvalue()), ValueClasses::G);
+		48, 64, 48, 32, &textInputStyle, (char*) "G value", std::to_string(DataModel::getData()->getGvalue()), ComponentName::G);
 	mainWindow.getPalette()->addTextInput(
-		96, 64, 48, 32, &textInputStyle, (char*) "B value", std::to_string(DataModel::getData()->getBvalue()), ValueClasses::B);
+		96, 64, 48, 32, &textInputStyle, (char*) "B value", std::to_string(DataModel::getData()->getBvalue()), ComponentName::B);
 
-	mainWindow.getPalette()->setChoosenColor(160, 0, 32, 32, &colorInputStyle, 0xFFEB3B, (char*) "#FFEB3B");
+	mainWindow.getPalette()->setChoosenColor(160, 0, 32, 32, &colorInputStyle, 0xFFEB3B, (char*) "#FFEB3B", ComponentName::None);
+	DataModel::getData()->addColorListener(mainWindow.getPalette()->getTextInput(0));
+	DataModel::getData()->addColorListener(mainWindow.getPalette()->getTextInput(1));
+	DataModel::getData()->addColorListener(mainWindow.getPalette()->getTextInput(2));
+	DataModel::getData()->addColorListener(mainWindow.getPalette()->getChoosenColor());
 
 	for (size_t i = 0; i < colors.size(); i++) {
-		mainWindow.getPalette()->addColorInput((i % 6) * 32, 128 + (i / 6) * 32, 32, 32, &colorInputStyle, colors[i].color, colors[i].value);
+		mainWindow.getPalette()->addColorInput((i % 6) * 32, 128 + (i / 6) * 32, 32, 32, &colorInputStyle, colors[i].color, colors[i].value, ComponentName::Color);
 	}
 
  	SDL_Flip(screen);

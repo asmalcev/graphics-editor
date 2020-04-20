@@ -1,14 +1,16 @@
 #pragma once
 #include <SDL/SDL.h>
-#include "Interfaces/Tool.hpp"
+#include <vector>
+#include "Interfaces/Observer.hpp"
 
 class DataModel {
 private:
   static DataModel* m_dataModel;
   int lineWidth, Rvalue, Gvalue, Bvalue;
   Uint32 choosenColor;
-  Tool* m_tool;
   DataModel();
+  std::vector<Observer*> colorListeners;
+  void notifyColorListeners();
 
 public:
   static DataModel* getData() {
@@ -27,7 +29,6 @@ public:
   int getRvalue();
   int getGvalue();
   int getBvalue();
-  void chooseTool(Tool*);
-  Tool* getTool();
+  void addColorListener(Observer*);
 
 };

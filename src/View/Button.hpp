@@ -8,7 +8,7 @@ private:
 	char* img;
 
 public:
-	Button(SDL_Surface*,int,int,int,int,const style_s*,char*,char*);
+	Button(SDL_Surface*,int,int,int,int,const style_s*,char*,char*,ComponentName);
 	~Button();
 	void draw();
   SDL_Rect getBound();

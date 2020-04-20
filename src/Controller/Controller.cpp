@@ -41,6 +41,11 @@ void Controller::focusTextInput(TextInput* newObj) {
     focusedTextInput = NULL;
 }
 
+void Controller::clickColorInput(ColorInput* choosedColor) {
+  DataModel::getData()->setChoosenColor(choosedColor->getColorValue());
+}
+
+
 bool Controller::waitingForInput() {
   return focusedTextInput != NULL;
 }
@@ -57,25 +62,28 @@ void Controller::readInput(SDL_Event* event) {
     value = value * 10 + sym - 48;
   }
 
-  switch (focusedTextInput->getValueClass()) {
-    case ValueClasses::Line:
+  switch (focusedTextInput->getComponentName()) {
+    case ComponentName::Line:
       if (value == 0) value = 1;
       if (value > 20) value = 20;
       break;
 
-    case ValueClasses::R:
+    case ComponentName::R:
       if (value > 255) value = 255;
       DataModel::getData()->setRvalue(value);
       break;
     
-    case ValueClasses::G:
+    case ComponentName::G:
       if (value > 255) value = 255;
       DataModel::getData()->setGvalue(value);
       break;
 
-    case ValueClasses::B:
+    case ComponentName::B:
       if (value > 255) value = 255;
       DataModel::getData()->setBvalue(value);
+      break;
+    
+    default:
       break;
   }
 

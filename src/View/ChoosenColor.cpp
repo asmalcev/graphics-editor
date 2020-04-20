@@ -1,5 +1,7 @@
 #include "Controller/Controller.hpp"
+#include "Model/DataModel.hpp"
 #include "ChoosenColor.hpp"
+#include "main/utils.hpp"
 
 ChoosenColor::ChoosenColor(
   SDL_Surface* screenSurface,
@@ -9,11 +11,13 @@ ChoosenColor::ChoosenColor(
   int h,
   const style_s* inputStyle,
   Uint32 color,
-  char* tooltip
+  char* tooltip,
+  ComponentName className
 ) {
   screen = screenSurface;
   style = inputStyle;
   tooltipText = tooltip;
+  name = className;
 
   pos.x = x + style->margin;
   pos.y = y + style->margin;
@@ -74,5 +78,13 @@ void ChoosenColor::toggleHoveredDraw() {
 
 void ChoosenColor::setChoosenColor(Uint32 newValue) {
   colorValue = newValue;
+  SDL_Flip(screen);
+}
+
+void ChoosenColor::notify() {
+  colorValue = DataModel::getData()->getChoosenColor();
+  tooltipText = IntToHexChars(colorValue);
+
+  draw();
   SDL_Flip(screen);
 }

@@ -20,9 +20,10 @@ public:
 	SDL_Rect getBound() override;
 	bool clicked(SDL_Event*) override;
 	bool hovered(SDL_Event*) override;
-  void addColorInput(int,int,int,int,const style_s*,Uint32,char*);
-  void addTextInput(int,int,int,int,const style_s*,char*,std::string,ValueClasses);
-  void setChoosenColor(int,int,int,int,const style_s*,Uint32,char*);
-  void setButton(int,int,int,int,const style_s*,char*,char*);
+  void addColorInput(int,int,int,int,const style_s*,Uint32,char*,ComponentName);
+  void addTextInput(int,int,int,int,const style_s*,char*,std::string,ComponentName);
+  void setChoosenColor(int,int,int,int,const style_s*,Uint32,char*,ComponentName);
+  ChoosenColor* getChoosenColor();
+  TextInput* getTextInput(size_t index);
 
 };

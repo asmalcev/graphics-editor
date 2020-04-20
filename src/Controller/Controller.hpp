@@ -3,6 +3,8 @@
 #include "Interfaces/Focused.hpp"
 #include "Interfaces/Hovered.hpp"
 #include "View/TextInput.hpp"
+#include "View/ColorInput.hpp"
+#include "Interfaces/Tool.hpp"
 
 class Controller {
 private:
@@ -11,6 +13,7 @@ private:
   Hovered* hoveredObj;
   TextInput* focusedTextInput;
   Uint32 choosedColor;
+  Tool* m_tool;
   Controller();
 
 public:
@@ -24,7 +27,10 @@ public:
   bool changeHover(Hovered*);
   void clearHoveredObj();
   void focusTextInput(TextInput*);
+  void clickColorInput(ColorInput*);
   bool waitingForInput();
   void readInput(SDL_Event*);
+  void chooseTool(Tool*);
+  Tool* getTool();
 
 };

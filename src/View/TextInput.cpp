@@ -4,6 +4,7 @@
 #include "main/graphicsEditor.hpp"
 #include "TextInput.hpp"
 #include "Controller/Controller.hpp"
+#include "Model/DataModel.hpp"
 #include "main/utils.hpp"
 
 TextInput::TextInput(
@@ -15,13 +16,13 @@ TextInput::TextInput(
   const style_s* inputStyle,
   char* tooltip,
   std::string holderValue,
-  ValueClasses className
+  ComponentName className
 ) {
   screen = screenSurface;
   style = inputStyle;
   tooltipText = tooltip;
   value = holderValue;
-  valueClass = className;
+  name = className;
 
   pos.x = x + style->margin;
   pos.y = y + style->margin;
@@ -126,6 +127,25 @@ std::string TextInput::getValue() {
   return value;
 }
 
-ValueClasses TextInput::getValueClass() {
-  return valueClass;
+void TextInput::notify() {
+  switch (name) {
+    case ComponentName::Line:
+      break;
+
+    case ComponentName::R:
+      value = IntToChars(DataModel::getData()->getRvalue());
+      break;
+    
+    case ComponentName::G:
+      value = IntToChars(DataModel::getData()->getGvalue());
+      break;
+
+    case ComponentName::B:
+      value = IntToChars(DataModel::getData()->getBvalue());
+      break;
+    
+    default:
+      break;
+  }
+  draw();
 }
