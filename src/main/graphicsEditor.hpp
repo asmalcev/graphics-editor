@@ -10,17 +10,28 @@ struct style_s {
   int tooltipTextFontSize;
 };
 
-enum ComponentName {None, Line, R, G, B, Color};
+class Point {
+public:
+  int x;
+  int y;
+  Point(int x, int y) : x(x), y(y) {}
+  Point(const Point & other) {
+    x = other.x;
+    y = other.y;
+  }
+};
 
-constexpr Uint32 mainColor = 0xE8E8EC;
-constexpr Uint32 backgroundColor = 0x2B2D42;
-constexpr Uint32 focusedColor = 0xff1053;
+enum ComponentName {None, Line, R, G, B, Color, PencilClass, ErraserClass, FillerClass, RectClass, CircleClass, LineClass};
+
+constexpr Uint32 mainColor = 0xEDF2F4;
+constexpr Uint32 backgroundColor = 0x1E2036;
+constexpr Uint32 focusedColor = 0xFF1053;
 
 constexpr Uint16 window_width = 1000;
 constexpr Uint16 window_height = 600;
 constexpr Uint16 window_scrdepth = 32;
 
-constexpr style_s windowStyle = {12, mainColor, 4, 0x1E2036};
-constexpr style_s btnStyle = {12, 0x1A237E, 2, 0x9E9E9E, 0xFFF59D, 0x212121, 16};
-constexpr style_s textInputStyle = {12, 0x757575, 2, 0x9E9E9E, 0xFFF59D, 0x212121, 16};
-constexpr style_s colorInputStyle = {12, 0x757575, 2, 0x9E9E9E, 0xFFF59D, 0x212121, 16};
+constexpr style_s windowStyle = {12, mainColor, 4, 0x060620};
+constexpr style_s btnStyle = {12, 0x1A237E, 2, 0xD3D5D4, 0xFFF59D, 0x212121, 16};
+constexpr style_s textInputStyle = {12, 0x757575, 2, 0xD3D5D4, 0xFFF59D, 0x212121, 16};
+constexpr style_s colorInputStyle = {12, 0x757575, 2, 0xD3D5D4, 0xFFF59D, 0x212121, 16};

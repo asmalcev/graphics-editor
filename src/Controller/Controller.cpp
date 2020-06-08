@@ -1,5 +1,8 @@
 #include "Controller.hpp"
 #include "Model/DataModel.hpp"
+#include "Tools/PencilInstrument.hpp"
+#include "Tools/ErraserInstrument.hpp"
+#include "Tools/LineInstrument.hpp"
 
 #include <iostream>
 
@@ -7,15 +10,22 @@ Controller::Controller() {
   hoveredObj = NULL;
   focusedObj = NULL;
   focusedTextInput = NULL;
+  choosenTool = NULL;
+  mousePressed = false;
+
+  m_tools.push_back(new PencilInstrument());
+  m_tools.push_back(new ErraserInstrument());
+  m_tools.push_back(new LineInstrument());
 }
 
-void Controller::changeFocus(Focused* newObj) {
+void Controller::changeFocus(Focused* newObj, bool isInput) {
   if (focusedObj != newObj) {
     if (focusedObj != NULL) focusedObj->toggleFocusedDraw();
     focusedObj = newObj;
   } else {
     focusedObj = NULL;
   }
+  if (!isInput) focusedTextInput = NULL;
 }
 
 bool Controller::changeHover(Hovered* newObj) {
@@ -64,8 +74,8 @@ void Controller::readInput(SDL_Event* event) {
 
   switch (focusedTextInput->getComponentName()) {
     case ComponentName::Line:
-      if (value == 0) value = 1;
       if (value > 20) value = 20;
+      DataModel::getData()->setLineWidth(value);
       break;
 
     case ComponentName::R:
@@ -90,5 +100,33 @@ void Controller::readInput(SDL_Event* event) {
   focusedTextInput->changeValue(std::to_string(value));
 }
 
+void Controller::chooseTool(ComponentName name) {
+  switch (name) {
+    case PencilClass:
+      choosenTool = m_tools[0];
+      break;
+    case ErraserClass:
+      choosenTool = m_tools[1];
+      break;
+    case LineClass:
+      choosenTool = m_tools[2];
+      break;
+    
+    default:
+      choosenTool = NULL;
+  }
+}
+
+Tool* Controller::getTool() {
+  return choosenTool;
+}
+
+void Controller::changeMouseState(bool state) {
+  mousePressed = state;
+}
+
+bool Controller::isMousePressed() {
+  return mousePressed;
+}
 
 Controller* Controller::m_controller = 0;

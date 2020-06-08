@@ -1,5 +1,6 @@
 #include "../../../libs/SDL_draw-1.2.13/include/SDL_draw.h"
 #include "Canvas.hpp"
+#include "Controller/Controller.hpp"
 
 Canvas::Canvas(
   SDL_Surface* screenSurface,
@@ -37,22 +38,40 @@ SDL_Rect Canvas::getBound() {
   return pos;
 }
 
-bool Canvas::clicked(SDL_Event* event) {
+bool Canvas::clicked(SDL_Event * event) {
   if (
 		pos.x <= event->button.x && pos.x + pos.w >= event->button.x &&
 		pos.y <= event->button.y && pos.y + pos.h >= event->button.y
 	) {
+    Tool * m_tool = Controller::getController()->getTool();
+    if (m_tool != NULL) {
+      m_tool->draw(screen, event->button.x, event->button.y, pos);
+    }
     return true;
 	}
   return false;
 }
 
-bool Canvas::hovered(SDL_Event* event) {
+bool Canvas::hovered(SDL_Event * event) {
   if (
 		pos.x <= event->button.x && pos.x + pos.w >= event->button.x &&
 		pos.y <= event->button.y && pos.y + pos.h >= event->button.y
 	) {
+    if (Controller::getController()->isMousePressed()) {
+      Tool * m_tool = Controller::getController()->getTool();
+      if (m_tool != NULL) {
+        m_tool->draw(screen, event->button.x, event->button.y, pos);
+      }
+    }
     return true;
 	}
   return false;
+}
+
+bool Canvas::mouseUp(SDL_Event * event) {
+  Tool * m_tool = Controller::getController()->getTool();
+  if (m_tool != NULL) {
+    m_tool->finishDraw(screen);
+  }
+  return true;
 }

@@ -77,7 +77,7 @@ bool TextInput::clicked(SDL_Event* event) {
 		pos.y <= event->button.y && pos.y + pos.h >= event->button.y
 	) {
     toggleFocusedDraw();
-    Controller::getController()->changeFocus(this);
+    Controller::getController()->changeFocus(this, true);
     Controller::getController()->focusTextInput(this);
     return true;
 	}

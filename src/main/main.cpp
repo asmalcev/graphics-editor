@@ -13,7 +13,7 @@
 
 	export CFLAGS="`sdl-config --cflags` -I../../../libs/SDL_draw-1.2.13/include"
 	export LIBS="`sdl-config --libs` ../../../libs/SDL_draw-1.2.13/src/.libs/libSDL_draw.a"
-	g++ main/*.cpp Controller/*.cpp Model/*.cpp View/*.cpp -Wall $CFLAGS $LIBS -lSDL -lSDL_ttf -lSDL_draw -I ./  && ./a.out && rm a.out
+	g++ main/*.cpp Controller/*.cpp Model/*.cpp View/*.cpp Tools/*.cpp -Wall $CFLAGS $LIBS -lSDL -lSDL_ttf -lSDL_draw -I ./  && ./a.out && rm a.out
 	
 */
 
@@ -79,17 +79,17 @@ int main(int argc, char *argv[]) {
 	mainWindow.getCanvas()->draw();
 
 	mainWindow.getToolbar()->addButton(
-		0, 0, 32, 32, &btnStyle, (char*) "../public/pencil.bmp", (char*) "Pencil", ComponentName::None);
+		0, 0, 32, 32, &btnStyle, (char*) "../public/pencil.bmp", (char*) "Pencil", ComponentName::PencilClass);
 	mainWindow.getToolbar()->addButton(
-		32, 0, 32, 32, &btnStyle, (char*) "../public/erraser.bmp", (char*) "Eraser", ComponentName::None);
+		32, 0, 32, 32, &btnStyle, (char*) "../public/erraser.bmp", (char*) "Eraser", ComponentName::ErraserClass);
 	mainWindow.getToolbar()->addButton(
-		64, 0, 32, 32, &btnStyle, (char*) "../public/filler.bmp", (char*) "Filler", ComponentName::None);
+		64, 0, 32, 32, &btnStyle, (char*) "../public/filler.bmp", (char*) "Filler", ComponentName::FillerClass);
 	mainWindow.getToolbar()->addButton(
-		96, 0, 32, 32, &btnStyle, (char*) "../public/circle.bmp", (char*) "Circle", ComponentName::None);
+		96, 0, 32, 32, &btnStyle, (char*) "../public/circle.bmp", (char*) "Circle", ComponentName::CircleClass);
 	mainWindow.getToolbar()->addButton(
-		128, 0, 32, 32, &btnStyle, (char*) "../public/square.bmp", (char*) "Square", ComponentName::None);
+		128, 0, 32, 32, &btnStyle, (char*) "../public/square.bmp", (char*) "Rect", ComponentName::RectClass);
 	mainWindow.getToolbar()->addButton(
-		160, 0, 32, 32, &btnStyle, (char*) "../public/line.bmp", (char*) "Line", ComponentName::None);
+		160, 0, 32, 32, &btnStyle, (char*) "../public/line.bmp", (char*) "Line", ComponentName::LineClass);
 
 	mainWindow.getToolbar()->addTextInput(
 		96, 160, 36, 32, &textInputStyle, (char*) "Line width", std::to_string(DataModel::getData()->getLineWidth()), ComponentName::Line);
@@ -132,7 +132,12 @@ int main(int argc, char *argv[]) {
 				delete Controller::getController();
  	   		return 0;
 			case SDL_MOUSEBUTTONDOWN:
+				Controller::getController()->changeMouseState(true);
 				mainWindow.clicked(&event);
+				break;
+			case SDL_MOUSEBUTTONUP:
+				Controller::getController()->changeMouseState(false);
+				mainWindow.mouseUp(&event);
 				break;
 			case SDL_MOUSEMOTION:
 				mainWindow.hovered(&event);

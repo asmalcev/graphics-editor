@@ -8,9 +8,9 @@
 class Input {
 protected:
   SDL_Rect pos;
-  SDL_Surface* screen, *tmpForTooltip;
-  const style_s* style;
-	char* tooltipText;
+  SDL_Surface * screen, * tmpForTooltip;
+  const style_s * style;
+	char * tooltipText;
   bool isFocused, isHovered;
 	int textWidth, textHeight;
   ComponentName name;

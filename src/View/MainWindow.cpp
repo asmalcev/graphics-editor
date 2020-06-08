@@ -14,7 +14,9 @@ MainWindow::MainWindow(SDL_Surface* screenSurface) {
 }
 
 MainWindow::~MainWindow() {
-
+	// delete m_canvas;
+	// delete m_toolbar;
+	// delete m_palette;
 }
 
 void MainWindow::createWindows() {
@@ -53,4 +55,8 @@ Toolbar* MainWindow::getToolbar() {
 
 Palette* MainWindow::getPalette() {
 	return m_palette;
+}
+
+void MainWindow::mouseUp(SDL_Event * event) {
+	m_canvas->mouseUp(event);
 }

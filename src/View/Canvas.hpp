@@ -11,4 +11,5 @@ public:
 	SDL_Rect getBound() override;
 	bool clicked(SDL_Event*) override;
 	bool hovered(SDL_Event*) override;
+	bool mouseUp(SDL_Event*);
 };
