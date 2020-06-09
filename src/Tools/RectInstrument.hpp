@@ -2,13 +2,13 @@
 #include "Interfaces/Tool.hpp"
 #include "../main/graphicsEditor.hpp"
 
-class LineInstrument : public Tool {
+class RectInstrument : public Tool {
 private:
   Point * firstPoint;
   Point * secondPoint;
 public:
-  LineInstrument();
-  ~LineInstrument();
+  RectInstrument();
+  ~RectInstrument();
   void draw(SDL_Surface*,int,int,SDL_Rect) override;
   void finishDraw(SDL_Surface *, SDL_Rect) override;
 };

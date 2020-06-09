@@ -71,7 +71,7 @@ bool Canvas::hovered(SDL_Event * event) {
 bool Canvas::mouseUp(SDL_Event * event) {
   Tool * m_tool = Controller::getController()->getTool();
   if (m_tool != NULL) {
-    m_tool->finishDraw(screen);
+    m_tool->finishDraw(screen, pos);
   }
   return true;
 }

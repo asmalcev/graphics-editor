@@ -3,6 +3,8 @@
 #include "Tools/PencilInstrument.hpp"
 #include "Tools/ErraserInstrument.hpp"
 #include "Tools/LineInstrument.hpp"
+#include "Tools/CircleInstrument.hpp"
+#include "Tools/RectInstrument.hpp"
 
 #include <iostream>
 
@@ -16,6 +18,8 @@ Controller::Controller() {
   m_tools.push_back(new PencilInstrument());
   m_tools.push_back(new ErraserInstrument());
   m_tools.push_back(new LineInstrument());
+  m_tools.push_back(new CircleInstrument());
+  m_tools.push_back(new RectInstrument());
 }
 
 void Controller::changeFocus(Focused* newObj, bool isInput) {
@@ -110,6 +114,12 @@ void Controller::chooseTool(ComponentName name) {
       break;
     case LineClass:
       choosenTool = m_tools[2];
+      break;
+    case CircleClass:
+      choosenTool = m_tools[3];
+      break;
+    case RectClass:
+      choosenTool = m_tools[4];
       break;
     
     default:

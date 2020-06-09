@@ -1,17 +1,18 @@
 #include "../../../libs/SDL_draw-1.2.13/include/SDL_draw.h"
-#include "LineInstrument.hpp"
+#include "CircleInstrument.hpp"
 #include "Model/DataModel.hpp"
 #include "../main/graphicsEditor.hpp"
+#include <cmath>
 
-LineInstrument::LineInstrument() :
+CircleInstrument::CircleInstrument() :
   firstPoint(nullptr), secondPoint(nullptr) {}
 
-LineInstrument::~LineInstrument() {
+CircleInstrument::~CircleInstrument() {
   delete firstPoint;
   delete secondPoint;
 }
 
-void LineInstrument::draw(SDL_Surface* screen, int x, int y, SDL_Rect bound) {
+void CircleInstrument::draw(SDL_Surface* screen, int x, int y, SDL_Rect bound) {
   if (firstPoint == nullptr) {
     firstPoint = new Point(x, y);
   } else {
@@ -20,7 +21,7 @@ void LineInstrument::draw(SDL_Surface* screen, int x, int y, SDL_Rect bound) {
   }
 }
 
-void LineInstrument::finishDraw(SDL_Surface * screen, SDL_Rect bound) {
+void CircleInstrument::finishDraw(SDL_Surface * screen, SDL_Rect bound) {
   if (secondPoint != nullptr) {
     int width = DataModel::getData()->getLineWidth();
     int xcoord, ycoord, xcoord2, ycoord2;
@@ -46,12 +47,12 @@ void LineInstrument::finishDraw(SDL_Surface * screen, SDL_Rect bound) {
             (xcoord2 >= bound.x && xcoord2 < bound.w + bound.x &&
             ycoord2 >= bound.y && ycoord2 < bound.h + bound.y)
           )
-          Draw_Line(
+          Draw_Ellipse(
             screen, 
-            xcoord, 
-            ycoord, 
-            xcoord2,
-            ycoord2,
+            abs(xcoord + xcoord2) / 2,
+            abs(ycoord + ycoord2) / 2,
+            abs(xcoord - xcoord2) / 2,
+            abs(ycoord - ycoord2) / 2,
             DataModel::getData()->getChoosenColor());
         }
       }
