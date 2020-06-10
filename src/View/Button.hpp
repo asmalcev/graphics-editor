@@ -5,7 +5,7 @@
 
 class Button : public Input, public Focused, public Hovered {
 private:
-	char* img;
+	char * img;
 
 public:
 	Button(SDL_Surface*,int,int,int,int,const style_s*,char*,char*,ComponentName);

@@ -13,10 +13,16 @@ Toolbar::Toolbar(
   this->style = windowStyle;
   this->screen = screenSurface;
 
+  saveBtn = nullptr;
+
   pos.x = x + style->margin;
   pos.y = y + style->margin;
   pos.w = w - style->margin;
   pos.h = h - style->margin;
+}
+
+Toolbar::~Toolbar() {
+  delete saveBtn;
 }
 
 void Toolbar::draw() {
@@ -75,6 +81,9 @@ bool Toolbar::clicked(SDL_Event* event) {
     for (size_t i = 0; i < textInputs.size(); i++)
       if (textInputs[i].clicked(event)) break;
 
+    if (saveBtn != nullptr)
+      saveBtn->clicked(event);
+
     return true;
 	}
   return false;
@@ -90,6 +99,17 @@ bool Toolbar::hovered(SDL_Event* event) {
     
     for (size_t i = 0; i < textInputs.size(); i++)
       if (textInputs[i].hovered(event)) return true;
+    
+    if (saveBtn != nullptr)
+      saveBtn->hovered(event);
+    
+    return true;
 	}
   return false;
+}
+
+void Toolbar::addSaveButton(int x, int y, int w, int h, const style_s * btnStyle) {
+  if (saveBtn == nullptr) {
+    saveBtn = new Save(screen, pos.x + x, pos.y + y, w, h, btnStyle);
+  }
 }

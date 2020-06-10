@@ -3,12 +3,12 @@
 #include "Controller/Controller.hpp"
 
 Canvas::Canvas(
-  SDL_Surface* screenSurface,
+  SDL_Surface * screenSurface,
   int x,
   int y,
   int w,
   int h,
-  const style_s* windowStyle
+  const style_s * windowStyle
 ) {
   style = windowStyle;
   screen = screenSurface;

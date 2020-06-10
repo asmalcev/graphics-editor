@@ -6,6 +6,7 @@
 #include "View/TextInput.hpp"
 #include "View/ColorInput.hpp"
 #include "Interfaces/Tool.hpp"
+#include "View/Canvas.hpp"
 
 class Controller {
 private:
@@ -18,6 +19,7 @@ private:
   Controller();
   std::vector<Tool*> m_tools;
   bool mousePressed;
+  Canvas * m_canvas;
 
 public:
   static Controller* getController() {
@@ -37,5 +39,7 @@ public:
   Tool* getTool();
   void changeMouseState(bool);
   bool isMousePressed();
+  void save(SDL_Surface *);
+  void setCanvas(Canvas *);
 
 };

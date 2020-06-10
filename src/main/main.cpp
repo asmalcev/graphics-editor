@@ -7,6 +7,7 @@
 #include "Controller/Controller.hpp"
 #include "../../../libs/SDL_draw-1.2.13/include/SDL_draw.h"
 #include "View/MainWindow.hpp"
+#include "View/Modal.hpp"
 #include "utils.hpp"
 
 /*
@@ -78,6 +79,8 @@ int main(int argc, char *argv[]) {
 	mainWindow.getPalette()->draw();
 	mainWindow.getCanvas()->draw();
 
+	Controller::getController()->setCanvas(mainWindow.getCanvas());
+
 	mainWindow.getToolbar()->addButton(
 		0, 0, 32, 32, &btnStyle, (char*) "../public/pencil.bmp", (char*) "Pencil", ComponentName::PencilClass);
 	mainWindow.getToolbar()->addButton(
@@ -90,6 +93,7 @@ int main(int argc, char *argv[]) {
 		128, 0, 32, 32, &btnStyle, (char*) "../public/square.bmp", (char*) "Rect", ComponentName::RectClass);
 	mainWindow.getToolbar()->addButton(
 		160, 0, 32, 32, &btnStyle, (char*) "../public/line.bmp", (char*) "Line", ComponentName::LineClass);
+	mainWindow.getToolbar()->addSaveButton(0, 32, 64, 32, &btnStyle);
 
 	mainWindow.getToolbar()->addTextInput(
 		96, 160, 36, 32, &textInputStyle, (char*) "Line width", std::to_string(DataModel::getData()->getLineWidth()), ComponentName::Line);
@@ -123,6 +127,9 @@ int main(int argc, char *argv[]) {
 		mainWindow.getPalette()->addColorInput((i % 6) * 32, 128 + (i / 6) * 32, 32, 32, &colorInputStyle, colors[i].color, colors[i].value, ComponentName::Color);
 	}
 
+	Modal mws(screen, 400, 200, &modalWindowStyle);
+	mws.draw();
+
  	SDL_Flip(screen);
  	while(SDL_WaitEvent(&event)){
 		switch (event.type) {
@@ -148,10 +155,10 @@ int main(int argc, char *argv[]) {
 				break;
 		}
 
-    switch (event.key.keysym.sym) {
-			default:
-				break;
-    }
+    // switch (event.key.keysym.sym) {
+		// 	default:
+		// 		break;
+    // }
  	}
 
 	TTF_Quit();

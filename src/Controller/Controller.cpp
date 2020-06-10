@@ -9,11 +9,12 @@
 #include <iostream>
 
 Controller::Controller() {
-  hoveredObj = NULL;
-  focusedObj = NULL;
-  focusedTextInput = NULL;
-  choosenTool = NULL;
-  mousePressed = false;
+  hoveredObj       = nullptr;
+  focusedObj       = nullptr;
+  focusedTextInput = nullptr;
+  choosenTool      = nullptr;
+  mousePressed     = false;
+  m_canvas         = nullptr;
 
   m_tools.push_back(new PencilInstrument());
   m_tools.push_back(new ErraserInstrument());
@@ -24,17 +25,17 @@ Controller::Controller() {
 
 void Controller::changeFocus(Focused* newObj, bool isInput) {
   if (focusedObj != newObj) {
-    if (focusedObj != NULL) focusedObj->toggleFocusedDraw();
+    if (focusedObj != nullptr) focusedObj->toggleFocusedDraw();
     focusedObj = newObj;
   } else {
-    focusedObj = NULL;
+    focusedObj = nullptr;
   }
-  if (!isInput) focusedTextInput = NULL;
+  if (!isInput) focusedTextInput = nullptr;
 }
 
 bool Controller::changeHover(Hovered* newObj) {
   if (hoveredObj != newObj) {
-    if (hoveredObj != NULL) hoveredObj->toggleHoveredDraw();
+    if (hoveredObj != nullptr) hoveredObj->toggleHoveredDraw();
     hoveredObj = newObj;
     return true;
   }
@@ -42,9 +43,9 @@ bool Controller::changeHover(Hovered* newObj) {
 }
 
 void Controller::clearHoveredObj() {
-  if (hoveredObj != NULL) {
+  if (hoveredObj != nullptr) {
     hoveredObj->toggleHoveredDraw();
-    hoveredObj = NULL;
+    hoveredObj = nullptr;
   }
 }
 
@@ -52,7 +53,7 @@ void Controller::focusTextInput(TextInput* newObj) {
   if (focusedTextInput != newObj)
     focusedTextInput = newObj;
   else
-    focusedTextInput = NULL;
+    focusedTextInput = nullptr;
 }
 
 void Controller::clickColorInput(ColorInput* choosedColor) {
@@ -61,7 +62,7 @@ void Controller::clickColorInput(ColorInput* choosedColor) {
 
 
 bool Controller::waitingForInput() {
-  return focusedTextInput != NULL;
+  return focusedTextInput != nullptr;
 }
 
 void Controller::readInput(SDL_Event* event) {
@@ -123,7 +124,7 @@ void Controller::chooseTool(ComponentName name) {
       break;
     
     default:
-      choosenTool = NULL;
+      choosenTool = nullptr;
   }
 }
 
@@ -137,6 +138,26 @@ void Controller::changeMouseState(bool state) {
 
 bool Controller::isMousePressed() {
   return mousePressed;
+}
+
+void Controller::setCanvas(Canvas * canvas) {
+  if (m_canvas == nullptr) {
+    m_canvas = canvas;
+  }
+}
+
+
+void Controller::save(SDL_Surface * screen) {
+  if (m_canvas != nullptr) {
+    SDL_Rect bound = m_canvas->getBound();
+    SDL_Surface * tmp = SDL_CreateRGBSurface(SDL_HWSURFACE |
+      SDL_DOUBLEBUF, bound.w, bound.h, window_scrdepth,
+      screen->format->Rmask, screen->format->Gmask,
+      screen->format->Bmask, screen->format->Amask);
+      SDL_BlitSurface(screen, &bound, tmp, NULL);
+      SDL_SaveBMP(tmp, "../example.bmp");
+    SDL_FreeSurface(tmp);
+  }
 }
 
 Controller* Controller::m_controller = 0;
