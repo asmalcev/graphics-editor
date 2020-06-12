@@ -16,7 +16,8 @@ TextInput::TextInput(
   const style_s* inputStyle,
   char* tooltip,
   std::string holderValue,
-  ComponentName className
+  ComponentName className,
+  bool startDraw
 ) {
   screen = screenSurface;
   style = inputStyle;
@@ -39,7 +40,7 @@ TextInput::TextInput(
     SDL_DOUBLEBUF, textWidth, textHeight, window_scrdepth,
     screen->format->Rmask, screen->format->Gmask,
     screen->format->Bmask, screen->format->Amask);
-  this->draw();
+  if (startDraw) this->draw();
 }
 
 TextInput::~TextInput() {}
@@ -76,6 +77,7 @@ bool TextInput::clicked(SDL_Event* event) {
 		pos.x <= event->button.x && pos.x + pos.w >= event->button.x &&
 		pos.y <= event->button.y && pos.y + pos.h >= event->button.y
 	) {
+    Controller::getController()->clearHoveredObj();
     toggleFocusedDraw();
     Controller::getController()->changeFocus(this, true);
     Controller::getController()->focusTextInput(this);

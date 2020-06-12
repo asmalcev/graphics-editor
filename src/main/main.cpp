@@ -93,7 +93,13 @@ int main(int argc, char *argv[]) {
 		128, 0, 32, 32, &btnStyle, (char*) "../public/square.bmp", (char*) "Rect", ComponentName::RectClass);
 	mainWindow.getToolbar()->addButton(
 		160, 0, 32, 32, &btnStyle, (char*) "../public/line.bmp", (char*) "Line", ComponentName::LineClass);
-	mainWindow.getToolbar()->addSaveButton(0, 32, 64, 32, &btnStyle);
+	mainWindow.getToolbar()->addButton(
+		0, 32, 32, 32, &btnStyle, (char*) "../public/clear.bmp", (char*) "Clear canvas", ComponentName::ClearClass);
+	mainWindow.getToolbar()->addButton(
+		32, 32, 32, 32, &btnStyle, (char*) "../public/image.bmp", (char*) "Insert image", ComponentName::ImageClass);
+	mainWindow.getToolbar()->addButton(
+		64, 32, 32, 32, &btnStyle, (char*) "../public/pipette.bmp", (char*) "Color Picker", ComponentName::PipetteClass);
+	mainWindow.getToolbar()->addSaveButton(96, 32, 64, 32, &btnStyle);
 
 	mainWindow.getToolbar()->addTextInput(
 		96, 160, 36, 32, &textInputStyle, (char*) "Line width", std::to_string(DataModel::getData()->getLineWidth()), ComponentName::Line);
@@ -128,10 +134,15 @@ int main(int argc, char *argv[]) {
 	}
 
 	Modal mws(screen, 400, 200, &modalWindowStyle);
-	mws.draw();
+	char * cstr = new char[DataModel::getData()->getFilePath().length() + 1];
+	strcpy(cstr, DataModel::getData()->getFilePath().c_str());
+	mws.setInput(12, 50, 200, 40, (char *) "File path", cstr, ComponentName::FilePath);
+	delete [] cstr;
+	mws.setConfirm(12, 90, 200, 40);
+	Controller::getController()->addModal(&mws);
 
  	SDL_Flip(screen);
- 	while(SDL_WaitEvent(&event)){
+ 	while(SDL_WaitEvent(&event)) {
 		switch (event.type) {
 			case SDL_QUIT:
 				TTF_Quit();
@@ -140,14 +151,22 @@ int main(int argc, char *argv[]) {
  	   		return 0;
 			case SDL_MOUSEBUTTONDOWN:
 				Controller::getController()->changeMouseState(true);
-				mainWindow.clicked(&event);
+				if (Controller::getController()->getIndexOfOpenedModal() == 1) {
+					mws.clicked(&event);
+				} else {
+					mainWindow.clicked(&event);
+				}
 				break;
 			case SDL_MOUSEBUTTONUP:
 				Controller::getController()->changeMouseState(false);
 				mainWindow.mouseUp(&event);
 				break;
 			case SDL_MOUSEMOTION:
-				mainWindow.hovered(&event);
+				if (Controller::getController()->getIndexOfOpenedModal() == 1) {
+					mws.hovered(&event);
+				} else {
+					mainWindow.hovered(&event);
+				}
 				break;
 			case SDL_KEYDOWN:
 				if (Controller::getController()->waitingForInput())

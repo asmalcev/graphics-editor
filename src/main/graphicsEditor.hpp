@@ -14,6 +14,7 @@ class Point {
 public:
   int x;
   int y;
+  Point() : x(0), y(0) {}
   Point(int x, int y) : x(x), y(y) {}
   Point(const Point & other) {
     x = other.x;
@@ -21,7 +22,25 @@ public:
   }
 };
 
-enum ComponentName {None, Line, R, G, B, Color, PencilClass, ErraserClass, FillerClass, RectClass, CircleClass, LineClass, SaveClass};
+enum ComponentName {
+  None,
+  Line,
+  R,
+  G,
+  B,
+  Color,
+  PencilClass,
+  ErraserClass,
+  FillerClass,
+  RectClass,
+  CircleClass,
+  LineClass,
+  ClearClass,
+  ImageClass,
+  PipetteClass,
+  SaveClass,
+  FilePath
+};
 
 constexpr Uint32 mainColor = 0xEDF2F4;
 constexpr Uint32 backgroundColor = 0x1E2036;

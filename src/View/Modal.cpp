@@ -1,13 +1,15 @@
 #include "../../../libs/SDL_draw-1.2.13/include/SDL_draw.h"
 #include "Controller/Controller.hpp"
 #include "Modal.hpp"
+#include "main/graphicsEditor.hpp"
+#include <iostream>
 
 Modal::Modal(
   SDL_Surface * screenSurface,
   int w,
   int h,
   const style_s * windowStyle
-) : opened(false) {
+) : txtInput(nullptr), m_confirm(nullptr) {
   style = windowStyle;
   screen = screenSurface;
 
@@ -26,6 +28,8 @@ Modal::Modal(
 
 Modal::~Modal() {
   SDL_FreeSurface(tmp);
+  delete txtInput;
+  delete m_confirm;
 }
 
 SDL_Rect Modal::getBound() {
@@ -33,28 +37,26 @@ SDL_Rect Modal::getBound() {
 }
 
 void Modal::draw() {
-  if (opened) {
-    SDL_BlitSurface(tmp, NULL, screen, NULL);
-  } else {
-    SDL_BlitSurface(screen, NULL, tmp, NULL);
-    Draw_FillRect(screen, 0, 0, window_width, window_height, backgroundColor);
-    Draw_FillRect(screen, 
-      (Sint16) (pos.x + style->shadowOffset), 
-      (Sint16) (pos.y + pos.h),
-      pos.w, style->shadowOffset, 
-      style->shadowColor);
-    Draw_FillRect(screen,
-      (Sint16) (pos.x + pos.w),
-      (Sint16) (pos.y + style->shadowOffset),
-      style->shadowOffset,
-      (Uint16) (pos.h - style->shadowOffset),
-      style->shadowColor);
-    Draw_FillRect(screen, pos.x, pos.y, pos.w, pos.h, style->color);
-    addText(84, 12, (char*) "Input relative or absolute path", 18, 0x333333);
-    addText(84, 30, (char*) "with name and ends with .bmp", 18, 0x333333);
-  }
-  SDL_Flip(screen);
-  opened = !opened;
+  SDL_BlitSurface(screen, NULL, tmp, NULL);
+  Draw_FillRect(screen, 0, 0, window_width, window_height, backgroundColor);
+  Draw_FillRect(screen, 
+    (Sint16) (pos.x + style->shadowOffset), 
+    (Sint16) (pos.y + pos.h),
+    pos.w, style->shadowOffset, 
+    style->shadowColor);
+  Draw_FillRect(screen,
+    (Sint16) (pos.x + pos.w),
+    (Sint16) (pos.y + style->shadowOffset),
+    style->shadowOffset,
+    (Uint16) (pos.h - style->shadowOffset),
+    style->shadowColor);
+  Draw_FillRect(screen, pos.x, pos.y, pos.w, pos.h, style->color);
+  if (txtInput != nullptr) txtInput->draw();
+  if (m_confirm != nullptr) m_confirm->draw();
+}
+
+void Modal::close() {
+  SDL_BlitSurface(tmp, NULL, screen, NULL);
 }
 
 bool Modal::clicked(SDL_Event * event) {
@@ -62,6 +64,8 @@ bool Modal::clicked(SDL_Event * event) {
 		pos.x <= event->button.x && pos.x + pos.w >= event->button.x &&
 		pos.y <= event->button.y && pos.y + pos.h >= event->button.y
 	) {
+    if (txtInput != nullptr && txtInput->clicked(event)) return true;
+    if (m_confirm != nullptr && m_confirm->clicked(event)) return true;
     return true;
 	}
   return false;
@@ -72,7 +76,18 @@ bool Modal::hovered(SDL_Event * event) {
 		pos.x <= event->button.x && pos.x + pos.w >= event->button.x &&
 		pos.y <= event->button.y && pos.y + pos.h >= event->button.y
 	) {
+    if (txtInput != nullptr && txtInput->hovered(event)) return true;
+    if (m_confirm != nullptr && m_confirm->hovered(event)) return true;
+    Controller::getController()->clearHoveredObj();
     return true;
 	}
   return false;
+}
+
+void Modal::setInput(int x, int y, int w, int h, char * tooltipTxt, char * holderTxt, ComponentName name) {
+  txtInput = new TextInput(screen, pos.x + x, pos.y + y, w, h, &textInputStyle, tooltipTxt, holderTxt, name, false);
+}
+
+void Modal::setConfirm(int x, int y, int w, int h) {
+  m_confirm = new Confirm(screen, pos.x + x, pos.y + y, w, h, &btnStyle);
 }

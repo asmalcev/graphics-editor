@@ -2,15 +2,17 @@
 #include <SDL/SDL.h>
 #include <vector>
 #include "Interfaces/Observer.hpp"
+#include <string>
 
 class DataModel {
 private:
-  static DataModel* m_dataModel;
+  static DataModel * m_dataModel;
   int lineWidth, Rvalue, Gvalue, Bvalue;
   Uint32 choosenColor;
   DataModel();
-  std::vector<Observer*> colorListeners;
+  std::vector<Observer *> colorListeners;
   void notifyColorListeners();
+  std::string filePath;
 
 public:
   static DataModel* getData() {
@@ -30,5 +32,7 @@ public:
   int getGvalue();
   int getBvalue();
   void addColorListener(Observer*);
+  void setFilePath(std::string);
+  std::string getFilePath();
 
 };

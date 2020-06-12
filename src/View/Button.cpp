@@ -72,6 +72,7 @@ bool Button::clicked(SDL_Event* event) {
 		pos.x <= event->button.x && pos.x + pos.w >= event->button.x &&
 		pos.y <= event->button.y && pos.y + pos.h >= event->button.y
 	) {
+    Controller::getController()->clearHoveredObj();
     toggleFocusedDraw();
     Controller::getController()->changeFocus(this, false);
     Controller::getController()->chooseTool(name);

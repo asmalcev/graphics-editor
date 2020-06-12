@@ -7,19 +7,22 @@
 #include "View/ColorInput.hpp"
 #include "Interfaces/Tool.hpp"
 #include "View/Canvas.hpp"
+#include "View/Modal.hpp"
 
 class Controller {
 private:
-  static Controller* m_controller;
-  Focused* focusedObj;
-  Hovered* hoveredObj;
-  TextInput* focusedTextInput;
+  static Controller * m_controller;
+  Focused * focusedObj;
+  Hovered * hoveredObj;
+  TextInput * focusedTextInput;
   Uint32 choosedColor;
-  Tool* choosenTool;
+  Tool * choosenTool;
   Controller();
-  std::vector<Tool*> m_tools;
+  std::vector<Tool *> m_tools;
   bool mousePressed;
   Canvas * m_canvas;
+  std::vector<Modal *> m_modals;
+  int openedModal;
 
 public:
   static Controller* getController() {
@@ -40,6 +43,9 @@ public:
   void changeMouseState(bool);
   bool isMousePressed();
   void save(SDL_Surface *);
+  void openSaveModal(SDL_Surface *);
   void setCanvas(Canvas *);
+  void addModal(Modal *);
+  int getIndexOfOpenedModal();
 
 };

@@ -65,7 +65,8 @@ bool Save::clicked(SDL_Event* event) {
 		pos.x <= event->button.x && pos.x + pos.w >= event->button.x &&
 		pos.y <= event->button.y && pos.y + pos.h >= event->button.y
 	) {
-    Controller::getController()->save(screen);
+    Controller::getController()->clearHoveredObj();
+    Controller::getController()->openSaveModal(screen);
     return true;
 	}
   return false;

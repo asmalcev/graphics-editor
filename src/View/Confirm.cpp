@@ -34,7 +34,6 @@ Confirm::Confirm(
     SDL_DOUBLEBUF, textWidth, textHeight, window_scrdepth,
     screen->format->Rmask, screen->format->Gmask,
     screen->format->Bmask, screen->format->Amask);
-  this->draw();
 }
 
 Confirm::~Confirm() {}
@@ -65,6 +64,8 @@ bool Confirm::clicked(SDL_Event* event) {
 		pos.x <= event->button.x && pos.x + pos.w >= event->button.x &&
 		pos.y <= event->button.y && pos.y + pos.h >= event->button.y
 	) {
+    Controller::getController()->clearHoveredObj();
+    Controller::getController()->openSaveModal(screen);
     Controller::getController()->save(screen);
     return true;
 	}

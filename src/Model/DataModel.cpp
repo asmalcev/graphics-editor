@@ -7,6 +7,7 @@ DataModel::DataModel() {
   Rvalue = 255;
   Gvalue = 235;
   Bvalue = 59;
+  filePath = "../example.bmp";
 }
 
 void DataModel::setLineWidth(int newValue) {
@@ -69,6 +70,14 @@ void DataModel::notifyColorListeners() {
   for (unsigned i = 0; i < colorListeners.size(); i++) {
     colorListeners[i]->notify();
   }
+}
+
+void DataModel::setFilePath(std::string newFilePath) {
+  filePath = newFilePath;
+}
+
+std::string DataModel::getFilePath() {
+  return filePath;
 }
 
 DataModel* DataModel::m_dataModel = 0;

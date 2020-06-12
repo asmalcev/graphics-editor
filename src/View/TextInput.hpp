@@ -10,7 +10,7 @@ protected:
   std::string value;
 
 public:
-  TextInput(SDL_Surface*,int,int,int,int,const style_s*,char*,std::string,ComponentName);
+  TextInput(SDL_Surface*,int,int,int,int,const style_s*,char*,std::string,ComponentName,bool = true);
   ~TextInput();
   void draw();
   SDL_Rect getBound();
