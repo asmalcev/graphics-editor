@@ -5,21 +5,10 @@
 #include <iostream>
 
 Modal::Modal(
-  SDL_Surface * screenSurface,
   int w,
   int h,
   const style_s * windowStyle
-) : txtInput(nullptr), m_confirm(nullptr) {
-  style = windowStyle;
-  screen = screenSurface;
-
-  int xcenter = window_width / 2;
-  int ycenter = window_height / 2;
-  pos.x = xcenter - w / 2;
-  pos.y = ycenter - h / 2;
-  pos.w = w;
-  pos.h = h;
-
+) : Window(window_width / 2 - w / 2, window_height / 2 - h / 2, w, h, windowStyle), txtInput(nullptr), m_confirm(nullptr)  {
   tmp = SDL_CreateRGBSurface(SDL_HWSURFACE |
     SDL_DOUBLEBUF, window_width, window_height, window_scrdepth,
     screen->format->Rmask, screen->format->Gmask,
@@ -32,25 +21,21 @@ Modal::~Modal() {
   delete m_confirm;
 }
 
-SDL_Rect Modal::getBound() {
-  return pos;
-}
-
-void Modal::draw() {
-  SDL_BlitSurface(screen, NULL, tmp, NULL);
-  Draw_FillRect(screen, 0, 0, window_width, window_height, backgroundColor);
-  Draw_FillRect(screen, 
+void Modal::draw(SDL_Surface * surf) {
+  SDL_BlitSurface(surf, NULL, tmp, NULL);
+  Draw_FillRect(surf, 0, 0, window_width, window_height, backgroundColor);
+  Draw_FillRect(surf, 
     (Sint16) (pos.x + style->shadowOffset), 
     (Sint16) (pos.y + pos.h),
     pos.w, style->shadowOffset, 
     style->shadowColor);
-  Draw_FillRect(screen,
+  Draw_FillRect(surf,
     (Sint16) (pos.x + pos.w),
     (Sint16) (pos.y + style->shadowOffset),
     style->shadowOffset,
     (Uint16) (pos.h - style->shadowOffset),
     style->shadowColor);
-  Draw_FillRect(screen, pos.x, pos.y, pos.w, pos.h, style->color);
+  Draw_FillRect(surf, pos.x, pos.y, pos.w, pos.h, style->color);
   if (txtInput != nullptr) txtInput->draw();
   if (m_confirm != nullptr) m_confirm->draw();
 }
@@ -85,9 +70,9 @@ bool Modal::hovered(SDL_Event * event) {
 }
 
 void Modal::setInput(int x, int y, int w, int h, char * tooltipTxt, char * holderTxt, ComponentName name) {
-  txtInput = new TextInput(screen, pos.x + x, pos.y + y, w, h, &textInputStyle, tooltipTxt, holderTxt, name, false);
+  txtInput = new TextInput(pos.x + x, pos.y + y, w, h, &textInputStyle, tooltipTxt, holderTxt, name, false);
 }
 
 void Modal::setConfirm(int x, int y, int w, int h) {
-  m_confirm = new Confirm(screen, pos.x + x, pos.y + y, w, h, &btnStyle);
+  m_confirm = new Confirm(pos.x + x, pos.y + y, w, h, &btnStyle);
 }

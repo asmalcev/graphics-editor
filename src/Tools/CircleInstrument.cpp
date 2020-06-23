@@ -1,7 +1,7 @@
 #include "../../../libs/SDL_draw-1.2.13/include/SDL_draw.h"
 #include "CircleInstrument.hpp"
 #include "Model/DataModel.hpp"
-#include "../main/graphicsEditor.hpp"
+#include "main/graphicsEditor.hpp"
 #include <cmath>
 
 CircleInstrument::CircleInstrument() :
@@ -12,7 +12,7 @@ CircleInstrument::~CircleInstrument() {
   delete secondPoint;
 }
 
-void CircleInstrument::draw(SDL_Surface* screen, int x, int y, SDL_Rect bound) {
+void CircleInstrument::draw(int x, int y, SDL_Rect bound) {
   if (firstPoint == nullptr) {
     firstPoint = new Point(x, y);
   } else {
@@ -21,7 +21,7 @@ void CircleInstrument::draw(SDL_Surface* screen, int x, int y, SDL_Rect bound) {
   }
 }
 
-void CircleInstrument::finishDraw(SDL_Surface * screen, SDL_Rect bound) {
+void CircleInstrument::finishDraw(SDL_Rect bound) {
   if (secondPoint != nullptr) {
     int width = DataModel::getData()->getLineWidth();
     int xcoord, ycoord, xcoord2, ycoord2;

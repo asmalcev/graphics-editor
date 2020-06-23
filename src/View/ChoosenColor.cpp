@@ -4,7 +4,6 @@
 #include "main/utils.hpp"
 
 ChoosenColor::ChoosenColor(
-  SDL_Surface* screenSurface,
   int x,
   int y,
   int w,
@@ -13,30 +12,17 @@ ChoosenColor::ChoosenColor(
   Uint32 color,
   char* tooltip,
   ComponentName className
-) {
-  screen = screenSurface;
-  style = inputStyle;
-  tooltipText = tooltip;
-  name = className;
-
-  pos.x = x + style->margin;
-  pos.y = y + style->margin;
-  pos.w = w - style->margin;
-  pos.h = h - style->margin;
-
-  TTF_SizeText(TTF_OpenFont("../public/Ubuntu.ttf", style->tooltipTextFontSize), tooltipText ,&textWidth, &textHeight);
-  textHeight += 2;
-  textWidth += 6;
-
+) : Input(x, y, w, h, inputStyle, tooltip, className) {
   isHovered = isFocused = false;
   colorValue = color;
   
-  tmpForTooltip = SDL_CreateRGBSurface(SDL_HWSURFACE |
-    SDL_DOUBLEBUF, textWidth, textHeight, window_scrdepth,
-    screen->format->Rmask, screen->format->Gmask,
-    screen->format->Bmask, screen->format->Amask);
   this->draw();
 }
+
+ChoosenColor::~ChoosenColor() {
+  SDL_FreeSurface(tmpForTooltip);
+};
+
 
 void ChoosenColor::draw() {
   Draw_FillRect(screen, 

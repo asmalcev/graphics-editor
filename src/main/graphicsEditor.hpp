@@ -55,3 +55,5 @@ constexpr style_s btnStyle = {12, 0xB0BEC5, 2, 0xD3D5D4, 0xFFF59D, 0x212121, 16}
 constexpr style_s textInputStyle = {12, 0x757575, 2, 0xD3D5D4, 0xFFF59D, 0x212121, 16};
 constexpr style_s colorInputStyle = {12, 0x757575, 2, 0xD3D5D4, 0xFFF59D, 0x212121, 16};
 constexpr style_s modalWindowStyle = {12, mainColor, 2, 0xD3D5D4, 0xFFF59D, 0x212121, 16};
+
+extern SDL_Surface * screen;

@@ -8,7 +8,7 @@
 class Input {
 protected:
   SDL_Rect pos;
-  SDL_Surface * screen, * tmpForTooltip;
+  SDL_Surface * tmpForTooltip;
   const style_s * style;
 	char * tooltipText;
   bool isFocused, isHovered;
@@ -16,6 +16,30 @@ protected:
   ComponentName name;
 
 public:
+  Input(
+    int x,
+    int y,
+    int w,
+    int h,
+    const style_s * inputStyle,
+    char * tooltip,
+    ComponentName className
+  ) : style(inputStyle), tooltipText(tooltip), name(className) {
+    pos.x = x + style->margin;
+    pos.y = y + style->margin;
+    pos.w = w - style->margin;
+    pos.h = h - style->margin;
+
+    TTF_SizeText(TTF_OpenFont("../public/Ubuntu.ttf", style->tooltipTextFontSize), tooltipText ,&textWidth, &textHeight);
+    textHeight += 2;
+    textWidth += 6;
+
+    tmpForTooltip = SDL_CreateRGBSurface(SDL_HWSURFACE |
+      SDL_DOUBLEBUF, textWidth, textHeight, window_scrdepth,
+      screen->format->Rmask, screen->format->Gmask,
+      screen->format->Bmask, screen->format->Amask);
+  }
+  virtual ~Input() {};
   virtual void draw() = 0;
   
   SDL_Rect getBound() {

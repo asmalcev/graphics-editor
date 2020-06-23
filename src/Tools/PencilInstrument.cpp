@@ -1,8 +1,9 @@
 #include "../../../libs/SDL_draw-1.2.13/include/SDL_draw.h"
 #include "PencilInstrument.hpp"
 #include "Model/DataModel.hpp"
+#include "main/graphicsEditor.hpp"
 
-void PencilInstrument::draw(SDL_Surface* screen, int x, int y, SDL_Rect bound) {
+void PencilInstrument::draw(int x, int y, SDL_Rect bound) {
   int width = DataModel::getData()->getLineWidth();
   int xcoord, ycoord;
   if (width == 1) {

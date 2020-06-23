@@ -6,38 +6,21 @@
 #include "main/utils.hpp"
 
 Save::Save(
-  SDL_Surface* screenSurface,
   int x,
   int y,
   int w,
   int h,
-  const style_s* btnStyle
-) {
-  screen = screenSurface;
-  style = btnStyle;
-  tooltipText = (char *) "Save painting";
-  name = ComponentName::SaveClass;
-
-  pos.x = x + style->margin;
-  pos.y = y + style->margin;
-  pos.w = w - style->margin;
-  pos.h = h - style->margin;
-  
-  TTF_SizeText(TTF_OpenFont("../public/Ubuntu.ttf", style->tooltipTextFontSize), tooltipText ,&textWidth, &textHeight);
-  textHeight += 2;
-  textWidth += 6;
-  
+  const style_s * btnStyle
+) : Input(x, y, w, h, btnStyle, (char *) "Save painting", ComponentName::SaveClass) {
   isHovered = false;
   btnText = (char *) "Save";
   
-  tmpForTooltip = SDL_CreateRGBSurface(SDL_HWSURFACE |
-    SDL_DOUBLEBUF, textWidth, textHeight, window_scrdepth,
-    screen->format->Rmask, screen->format->Gmask,
-    screen->format->Bmask, screen->format->Amask);
   this->draw();
 }
 
-Save::~Save() {}
+Save::~Save() {
+  SDL_FreeSurface(tmpForTooltip);
+}
 
 void Save::draw() {
   Draw_FillRect(screen, 
@@ -54,10 +37,6 @@ void Save::draw() {
   Draw_FillRect(screen, pos.x, pos.y, pos.w, pos.h, style->color);
   SDL_Rect textPos = {(Sint16) (pos.x + 10), pos.y, pos.w, pos.h};
   renderText(screen, textPos, btnText, style->tooltipTextFontSize, style->tooltipTextColor);
-}
-
-SDL_Rect Save::getBound() {
-  return pos;
 }
 
 bool Save::clicked(SDL_Event* event) {
@@ -92,21 +71,4 @@ void Save::toggleHoveredDraw() {
   }
   SDL_Flip(screen);
   isHovered = !isHovered;
-}
-
-void Save::drawTooltip() {
-  SDL_Rect tooltipPos = {pos.x, (Sint16) (pos.y - textHeight - 1), (Uint16) textWidth, (Uint16) textHeight};
-  SDL_BlitSurface(screen, &tooltipPos, tmpForTooltip, NULL);
-  Draw_FillRect(screen,
-    tooltipPos.x,
-    tooltipPos.y,
-    tooltipPos.w,
-    tooltipPos.h, style->tooltipColor);
-  Draw_Rect(screen,
-    tooltipPos.x,
-    tooltipPos.y,
-    tooltipPos.w,
-    tooltipPos.h, 0x333333);
-  tooltipPos.x = (Sint16) (tooltipPos.x + 2);
-  renderText(screen, tooltipPos, tooltipText, style->tooltipTextFontSize, style->tooltipTextColor);
 }

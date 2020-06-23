@@ -8,12 +8,11 @@ protected:
   Uint32 colorValue;
 
 public:
-  ChoosenColor(SDL_Surface*,int,int,int,int,const style_s*,Uint32,char*,ComponentName);
-  ChoosenColor() {};
-  ~ChoosenColor() {};
+  ChoosenColor(int,int,int,int,const style_s *,Uint32,char *,ComponentName);
+  ~ChoosenColor() override;
   void draw() override;
   void toggleHoveredDraw() override;
-  bool hovered(SDL_Event*);
+  bool hovered(SDL_Event *);
   void setChoosenColor(Uint32);
   void notify() override;
 

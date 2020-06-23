@@ -11,7 +11,7 @@ RectInstrument::~RectInstrument() {
   delete secondPoint;
 }
 
-void RectInstrument::draw(SDL_Surface* screen, int x, int y, SDL_Rect bound) {
+void RectInstrument::draw(int x, int y, SDL_Rect bound) {
   if (firstPoint == nullptr) {
     firstPoint = new Point(x, y);
   } else {
@@ -20,7 +20,7 @@ void RectInstrument::draw(SDL_Surface* screen, int x, int y, SDL_Rect bound) {
   }
 }
 
-void RectInstrument::finishDraw(SDL_Surface * screen, SDL_Rect bound) {
+void RectInstrument::finishDraw(SDL_Rect bound) {
   if (secondPoint != nullptr) {
     int width = DataModel::getData()->getLineWidth();
     int xcoord, ycoord, xcoord2, ycoord2;
@@ -79,42 +79,43 @@ void RectInstrument::finishDraw(SDL_Surface * screen, SDL_Rect bound) {
             ycoord >= bound.y && ycoord < bound.h + bound.y &&
             xcoord2 >= bound.x && xcoord2 < bound.w + bound.x &&
             ycoord2 >= bound.y && ycoord2 < bound.h + bound.y
-          )
-          if (xcoord < xcoord2) {
-            if (ycoord < ycoord2) {
-              Draw_Rect(
-                screen,
-                xcoord, 
-                ycoord, 
-                xcoord2 - xcoord,
-                ycoord2 - ycoord,
-                DataModel::getData()->getChoosenColor());
+          ) {
+            if (xcoord < xcoord2) {
+              if (ycoord < ycoord2) {
+                Draw_Rect(
+                  screen,
+                  xcoord, 
+                  ycoord, 
+                  xcoord2 - xcoord,
+                  ycoord2 - ycoord,
+                  DataModel::getData()->getChoosenColor());
+              } else {
+                Draw_Rect(
+                  screen,
+                  xcoord, 
+                  ycoord2, 
+                  xcoord2 - xcoord,
+                  ycoord - ycoord2,
+                  DataModel::getData()->getChoosenColor());
+              }
             } else {
-              Draw_Rect(
-                screen,
-                xcoord, 
-                ycoord2, 
-                xcoord2 - xcoord,
-                ycoord - ycoord2,
-                DataModel::getData()->getChoosenColor());
-            }
-          } else {
-            if (ycoord < ycoord2) {
-              Draw_Rect(
-                screen,
-                xcoord2, 
-                ycoord, 
-                xcoord - xcoord2,
-                ycoord2 - ycoord,
-                DataModel::getData()->getChoosenColor());
-            } else {
-              Draw_Rect(
-                screen,
-                xcoord2, 
-                ycoord2, 
-                xcoord - xcoord2,
-                ycoord - ycoord2,
-                DataModel::getData()->getChoosenColor());
+              if (ycoord < ycoord2) {
+                Draw_Rect(
+                  screen,
+                  xcoord2, 
+                  ycoord, 
+                  xcoord - xcoord2,
+                  ycoord2 - ycoord,
+                  DataModel::getData()->getChoosenColor());
+              } else {
+                Draw_Rect(
+                  screen,
+                  xcoord2, 
+                  ycoord2, 
+                  xcoord - xcoord2,
+                  ycoord - ycoord2,
+                  DataModel::getData()->getChoosenColor());
+              }
             }
           }
         }

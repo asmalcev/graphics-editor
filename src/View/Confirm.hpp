@@ -6,12 +6,11 @@ class Confirm : public Input, public Hovered {
 private:
   char * btnText;
 public:
-  Confirm(SDL_Surface *,int,int,int,int,const style_s *);
-	~Confirm();
+  Confirm(int,int,int,int,const style_s *);
+	~Confirm() override;
 	void draw();
-  SDL_Rect getBound();
 	bool clicked(SDL_Event *);
 	bool hovered(SDL_Event *);
 	void toggleHoveredDraw() override;
-	void drawTooltip();
+
 };

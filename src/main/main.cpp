@@ -14,7 +14,7 @@
 
 	export CFLAGS="`sdl-config --cflags` -I../../../libs/SDL_draw-1.2.13/include"
 	export LIBS="`sdl-config --libs` ../../../libs/SDL_draw-1.2.13/src/.libs/libSDL_draw.a"
-	g++ main/*.cpp Controller/*.cpp Model/*.cpp View/*.cpp Tools/*.cpp -Wall $CFLAGS $LIBS -lSDL -lSDL_ttf -lSDL_draw -I ./  && ./a.out && rm a.out
+	g++ main/*.cpp Controller/*.cpp Model/*.cpp View/*.cpp Tools/*.cpp -Wall $CFLAGS $LIBS -lSDL -lSDL_ttf -lSDL_draw -I ./ -o GraphicsEditor && ./GraphicsEditor
 	
 */
 
@@ -28,8 +28,8 @@ public:
 	}
 };
 
+SDL_Surface * screen;
 int main(int argc, char *argv[]) {
- 	SDL_Surface* screen;
  	SDL_Event event;
 	std::vector<ColorInputData> colors;
 	colors.push_back(ColorInputData(0x212121, (char*) "#212121"));
@@ -74,10 +74,8 @@ int main(int argc, char *argv[]) {
 		return 1;
  	}
 
-	MainWindow mainWindow(screen);
-	mainWindow.getToolbar()->draw();
-	mainWindow.getPalette()->draw();
-	mainWindow.getCanvas()->draw();
+	MainWindow mainWindow;
+	mainWindow.draw(screen);
 
 	Controller::getController()->setCanvas(mainWindow.getCanvas());
 
@@ -133,7 +131,7 @@ int main(int argc, char *argv[]) {
 		mainWindow.getPalette()->addColorInput((i % 6) * 32, 128 + (i / 6) * 32, 32, 32, &colorInputStyle, colors[i].color, colors[i].value, ComponentName::Color);
 	}
 
-	Modal mws(screen, 400, 200, &modalWindowStyle);
+	Modal mws(400, 200, &modalWindowStyle);
 	char * cstr = new char[DataModel::getData()->getFilePath().length() + 1];
 	strcpy(cstr, DataModel::getData()->getFilePath().c_str());
 	mws.setInput(12, 50, 200, 40, (char *) "File path", cstr, ComponentName::FilePath);

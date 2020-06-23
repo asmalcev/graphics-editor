@@ -8,15 +8,13 @@ private:
 	char * img;
 
 public:
-	Button(SDL_Surface*,int,int,int,int,const style_s*,char*,char*,ComponentName);
-	~Button();
+	Button(int,int,int,int,const style_s*,char*,char*,ComponentName,bool=true);
+	~Button() override;
 	void draw();
-  SDL_Rect getBound();
 	bool clicked(SDL_Event*);
 	bool hovered(SDL_Event*);
 	void drawClicked();
 	void toggleFocusedDraw() override;
 	void toggleHoveredDraw() override;
-	void drawTooltip();
 
 };

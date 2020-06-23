@@ -2,40 +2,19 @@
 #include "Palette.hpp"
 
 Palette::Palette(
-  SDL_Surface* screenSurface,
   int x,
   int y,
   int w,
   int h,
   const style_s* windowStyle
-) {
-  style = windowStyle;
-  screen = screenSurface;
-
-  pos.x = x + style->margin;
-  pos.y = y + style->margin;
-  pos.w = w - style->margin;
-  pos.h = h - style->margin;
-  m_choosenColor = NULL;
+) : Window(x, y, w, h, windowStyle) {
+  m_choosenColor = nullptr;
 }
 
-void Palette::draw() {
-  Draw_FillRect(screen, 
-    (Sint16) (pos.x + style->shadowOffset), 
-    (Sint16) (pos.y + pos.h),
-    pos.w, style->shadowOffset, 
-    style->shadowColor);
-  Draw_FillRect(screen,
-    (Sint16) (pos.x + pos.w),
-    (Sint16) (pos.y + style->shadowOffset),
-    style->shadowOffset,
-    (Uint16) (pos.h - style->shadowOffset),
-    style->shadowColor);
-  Draw_FillRect(screen, pos.x, pos.y, pos.w, pos.h, style->color);
-}
-
-SDL_Rect Palette::getBound() {
-  return pos;
+Palette::~Palette() {
+  delete m_choosenColor;
+  for (auto it = textInputs.begin(); it != textInputs.end(); it++) delete *it;
+  for (auto it = colors.begin(); it != colors.end(); it++) delete *it;
 }
 
 bool Palette::clicked(SDL_Event* event) {
@@ -44,10 +23,10 @@ bool Palette::clicked(SDL_Event* event) {
 		pos.y <= event->button.y && pos.y + pos.h >= event->button.y
 	) {
     for (size_t i = 0; i < textInputs.size(); i++)
-      if (textInputs[i].clicked(event)) break;
+      if (textInputs[i]->clicked(event)) break;
 
     for (size_t i = 0; i < colors.size(); i++)
-      if (colors[i].clicked(event)) break;
+      if (colors[i]->clicked(event)) break;
 
     return true;
 	}
@@ -62,10 +41,10 @@ bool Palette::hovered(SDL_Event* event) {
     if (m_choosenColor->hovered(event)) return true;
 
     for (size_t i = 0; i < textInputs.size(); i++)
-      if (textInputs[i].hovered(event)) return true;
+      if (textInputs[i]->hovered(event)) return true;
 
     for (size_t i = 0; i < colors.size(); i++)
-      if (colors[i].hovered(event)) return true;
+      if (colors[i]->hovered(event)) return true;
 	}
   return false;
 }
@@ -75,12 +54,12 @@ void Palette::addColorInput(
   int y,
   int w,
   int h,
-  const style_s* colorStyle,
+  const style_s * colorStyle,
   Uint32 color,
-  char* tooltip,
+  char * tooltip,
   ComponentName name
 ) {
-  colors.push_back(ColorInput(screen, pos.x + x, pos.y + y, w, h, colorStyle, color, tooltip, name));
+  colors.push_back(new ColorInput(pos.x + x, pos.y + y, w, h, colorStyle, color, tooltip, name));
 }
 
 void Palette::setChoosenColor(
@@ -88,13 +67,13 @@ void Palette::setChoosenColor(
   int y,
   int w,
   int h,
-  const style_s* colorStyle,
+  const style_s * colorStyle,
   Uint32 color,
-  char* tooltip,
+  char * tooltip,
   ComponentName name
   ) {
-  if (m_choosenColor != NULL) delete[] m_choosenColor;
-  m_choosenColor = new ChoosenColor(screen, pos.x + x, pos.y + y, w, h, colorStyle, color, tooltip, name);
+  if (m_choosenColor != nullptr) delete[] m_choosenColor;
+  m_choosenColor = new ChoosenColor(pos.x + x, pos.y + y, w, h, colorStyle, color, tooltip, name);
 }
 
 ChoosenColor* Palette::getChoosenColor() {
@@ -111,9 +90,24 @@ void Palette::addTextInput(
   std::string value,
   ComponentName className
 ) {
-  textInputs.push_back(TextInput(screen, pos.x + x, pos.y + y, w, h, textInputStyle, tooltip, value, className));
+  textInputs.push_back(new TextInput(pos.x + x, pos.y + y, w, h, textInputStyle, tooltip, value, className));
 }
 
 TextInput* Palette::getTextInput(size_t index) {
-  return &textInputs[index];
+  return textInputs[index];
+}
+
+void Palette::draw(SDL_Surface * surf) {
+	Draw_FillRect(surf, 
+		(Sint16) (pos.x + style->shadowOffset), 
+		(Sint16) (pos.y + pos.h),
+		pos.w, style->shadowOffset, 
+		style->shadowColor);
+	Draw_FillRect(surf,
+		(Sint16) (pos.x + pos.w),
+		(Sint16) (pos.y + style->shadowOffset),
+		style->shadowOffset,
+		(Uint16) (pos.h - style->shadowOffset),
+		style->shadowColor);
+	Draw_FillRect(surf, pos.x, pos.y, pos.w, pos.h, style->color);
 }

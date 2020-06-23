@@ -3,13 +3,10 @@
 #include "Interfaces/Window.hpp"
 
 class Canvas : public Window {
-private:
-
 public:
-  Canvas(SDL_Surface*,int,int,int,int,const style_s*);
-  void draw() override;
-	SDL_Rect getBound() override;
-	bool clicked(SDL_Event*) override;
-	bool hovered(SDL_Event*) override;
-	bool mouseUp(SDL_Event*);
+  Canvas(int,int,int,int,const style_s *);
+	bool clicked(SDL_Event *) override;
+	bool hovered(SDL_Event *) override;
+	void draw(SDL_Surface *) override;
+	bool mouseUp(SDL_Event *);
 };

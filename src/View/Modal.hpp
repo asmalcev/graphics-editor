@@ -11,11 +11,10 @@ protected:
   TextInput * txtInput;
   Confirm * m_confirm;
 public:
-  Modal(SDL_Surface *,int,int,const style_s *);
+  Modal(int,int,const style_s *);
   ~Modal();
-  void draw() override;
+  void draw(SDL_Surface *) override;
   void close();
-	SDL_Rect getBound() override;
 	bool clicked(SDL_Event *) override;
 	bool hovered(SDL_Event *) override;
   void setInput(int,int,int,int,char *,char *,ComponentName);

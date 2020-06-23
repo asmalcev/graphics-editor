@@ -184,7 +184,7 @@ void Controller::save(SDL_Surface * screen) {
   }
 }
 
-void Controller::openSaveModal(SDL_Surface * screen) {
+void Controller::openSaveModal(SDL_Surface * surf) {
   if (openedModal == 1) {
     openedModal = 0;
     m_modals[0]->close();
@@ -192,7 +192,7 @@ void Controller::openSaveModal(SDL_Surface * screen) {
   } else {
     if (m_modals.size() >= 1) {
       openedModal = 1;
-      m_modals[0]->draw();
+      m_modals[0]->draw(surf);
       m_modals[0]->addText(84, 12, (char*) "Input relative or absolute path", 18, 0x333333);
       m_modals[0]->addText(84, 30, (char*) "with name and ends with .bmp", 18, 0x333333);
       SDL_Flip(screen);

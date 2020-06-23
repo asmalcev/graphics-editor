@@ -8,7 +8,6 @@
 #include "main/utils.hpp"
 
 TextInput::TextInput(
-  SDL_Surface* screenSurface,
   int x,
   int y,
   int w,
@@ -17,33 +16,17 @@ TextInput::TextInput(
   char* tooltip,
   std::string holderValue,
   ComponentName className,
-  bool startDraw
-) {
-  screen = screenSurface;
-  style = inputStyle;
-  tooltipText = tooltip;
-  value = holderValue;
-  name = className;
-
-  pos.x = x + style->margin;
-  pos.y = y + style->margin;
-  pos.w = w - style->margin;
-  pos.h = h - style->margin;
-
-  TTF_SizeText(TTF_OpenFont("../public/Ubuntu.ttf", style->tooltipTextFontSize), tooltipText ,&textWidth, &textHeight);
-  textHeight += 2;
-  textWidth += 6;
-
+  bool drawNow
+) : Input(x, y, w, h, inputStyle, tooltip, className) {
   isHovered = isFocused = false;
-  
-  tmpForTooltip = SDL_CreateRGBSurface(SDL_HWSURFACE |
-    SDL_DOUBLEBUF, textWidth, textHeight, window_scrdepth,
-    screen->format->Rmask, screen->format->Gmask,
-    screen->format->Bmask, screen->format->Amask);
-  if (startDraw) this->draw();
+  value = holderValue;
+
+  if (drawNow) this->draw();
 }
 
-TextInput::~TextInput() {}
+TextInput::~TextInput() {
+  SDL_FreeSurface(tmpForTooltip);
+}
 
 void TextInput::draw() {
   Draw_FillRect(screen, 
@@ -66,10 +49,6 @@ void TextInput::draw() {
 void TextInput::drawClicked() {
   Draw_Rect(screen, pos.x, pos.y, pos.w, pos.h, focusedColor);
   Draw_Rect(screen, pos.x + 1, pos.y + 1, pos.w - 2, pos.h - 2, focusedColor);
-}
-
-SDL_Rect TextInput::getBound() {
-  return pos;
 }
 
 bool TextInput::clicked(SDL_Event* event) {

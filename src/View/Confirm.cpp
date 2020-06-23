@@ -6,37 +6,19 @@
 #include "main/utils.hpp"
 
 Confirm::Confirm(
-  SDL_Surface* screenSurface,
   int x,
   int y,
   int w,
   int h,
-  const style_s* btnStyle
-) {
-  screen = screenSurface;
-  style = btnStyle;
-  tooltipText = (char *) "Confirm saving";
-  name = ComponentName::SaveClass;
-
-  pos.x = x + style->margin;
-  pos.y = y + style->margin;
-  pos.w = w - style->margin;
-  pos.h = h - style->margin;
-  
-  TTF_SizeText(TTF_OpenFont("../public/Ubuntu.ttf", style->tooltipTextFontSize), tooltipText ,&textWidth, &textHeight);
-  textHeight += 2;
-  textWidth += 6;
-  
+  const style_s * btnStyle
+) : Input(x, y, w, h, btnStyle, (char *) "Confirm saving", ComponentName::SaveClass) {
   isHovered = false;
   btnText = (char *) "Confirm";
-  
-  tmpForTooltip = SDL_CreateRGBSurface(SDL_HWSURFACE |
-    SDL_DOUBLEBUF, textWidth, textHeight, window_scrdepth,
-    screen->format->Rmask, screen->format->Gmask,
-    screen->format->Bmask, screen->format->Amask);
 }
 
-Confirm::~Confirm() {}
+Confirm::~Confirm() {
+  SDL_FreeSurface(tmpForTooltip);
+}
 
 void Confirm::draw() {
   Draw_FillRect(screen, 
@@ -55,11 +37,7 @@ void Confirm::draw() {
   renderText(screen, textPos, btnText, style->tooltipTextFontSize, style->tooltipTextColor);
 }
 
-SDL_Rect Confirm::getBound() {
-  return pos;
-}
-
-bool Confirm::clicked(SDL_Event* event) {
+bool Confirm::clicked(SDL_Event * event) {
   if (
 		pos.x <= event->button.x && pos.x + pos.w >= event->button.x &&
 		pos.y <= event->button.y && pos.y + pos.h >= event->button.y
@@ -72,7 +50,7 @@ bool Confirm::clicked(SDL_Event* event) {
   return false;
 }
 
-bool Confirm::hovered(SDL_Event* event) {
+bool Confirm::hovered(SDL_Event * event) {
   if (
 		pos.x <= event->button.x && pos.x + pos.w >= event->button.x &&
 		pos.y <= event->button.y && pos.y + pos.h >= event->button.y
@@ -92,21 +70,4 @@ void Confirm::toggleHoveredDraw() {
   }
   SDL_Flip(screen);
   isHovered = !isHovered;
-}
-
-void Confirm::drawTooltip() {
-  SDL_Rect tooltipPos = {pos.x, (Sint16) (pos.y - textHeight - 1), (Uint16) textWidth, (Uint16) textHeight};
-  SDL_BlitSurface(screen, &tooltipPos, tmpForTooltip, NULL);
-  Draw_FillRect(screen,
-    tooltipPos.x,
-    tooltipPos.y,
-    tooltipPos.w,
-    tooltipPos.h, style->tooltipColor);
-  Draw_Rect(screen,
-    tooltipPos.x,
-    tooltipPos.y,
-    tooltipPos.w,
-    tooltipPos.h, 0x333333);
-  tooltipPos.x = (Sint16) (tooltipPos.x + 2);
-  renderText(screen, tooltipPos, tooltipText, style->tooltipTextFontSize, style->tooltipTextColor);
 }

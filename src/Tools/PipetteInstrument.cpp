@@ -1,7 +1,6 @@
 #include "../../../libs/SDL_draw-1.2.13/include/SDL_draw.h"
 #include "Model/DataModel.hpp"
 #include "PipetteInstrument.hpp"
-#include "main/graphicsEditor.hpp"
 
 Uint32 getpixel(SDL_Surface * surface, int x, int y) {
   int bpp = surface->format->BytesPerPixel;
@@ -24,11 +23,11 @@ Uint32 getpixel(SDL_Surface * surface, int x, int y) {
   }
 }
 
-void PipetteInstrument::draw(SDL_Surface * screen, int x, int y, SDL_Rect bound) {
+void PipetteInstrument::draw(int x, int y, SDL_Rect bound) {
   pos.x = x;
   pos.y = y;
 }
 
-void PipetteInstrument::finishDraw(SDL_Surface * screen, SDL_Rect bound) {
+void PipetteInstrument::finishDraw(SDL_Rect bound) {
   DataModel::getData()->setChoosenColor(getpixel(screen, pos.x, pos.y));
 }

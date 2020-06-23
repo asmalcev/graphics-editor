@@ -1,9 +1,9 @@
 #include "../../../libs/SDL_draw-1.2.13/include/SDL_draw.h"
 #include "ErraserInstrument.hpp"
 #include "Model/DataModel.hpp"
-#include "../main/graphicsEditor.hpp"
+#include "main/graphicsEditor.hpp"
 
-void ErraserInstrument::draw(SDL_Surface* screen, int x, int y, SDL_Rect bound) {
+void ErraserInstrument::draw(int x, int y, SDL_Rect bound) {
   int width = DataModel::getData()->getLineWidth();
   int xcoord, ycoord;
   if (width == 1) {

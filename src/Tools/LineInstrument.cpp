@@ -1,7 +1,7 @@
 #include "../../../libs/SDL_draw-1.2.13/include/SDL_draw.h"
 #include "LineInstrument.hpp"
 #include "Model/DataModel.hpp"
-#include "../main/graphicsEditor.hpp"
+#include "main/graphicsEditor.hpp"
 
 LineInstrument::LineInstrument() :
   firstPoint(nullptr), secondPoint(nullptr) {}
@@ -11,7 +11,7 @@ LineInstrument::~LineInstrument() {
   delete secondPoint;
 }
 
-void LineInstrument::draw(SDL_Surface* screen, int x, int y, SDL_Rect bound) {
+void LineInstrument::draw(int x, int y, SDL_Rect bound) {
   if (firstPoint == nullptr) {
     firstPoint = new Point(x, y);
   } else {
@@ -20,7 +20,7 @@ void LineInstrument::draw(SDL_Surface* screen, int x, int y, SDL_Rect bound) {
   }
 }
 
-void LineInstrument::finishDraw(SDL_Surface * screen, SDL_Rect bound) {
+void LineInstrument::finishDraw(SDL_Rect bound) {
   if (secondPoint != nullptr) {
     int width = DataModel::getData()->getLineWidth();
     int xcoord, ycoord, xcoord2, ycoord2;

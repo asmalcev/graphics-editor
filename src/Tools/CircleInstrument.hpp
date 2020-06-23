@@ -1,6 +1,6 @@
 #pragma once
 #include "Interfaces/Tool.hpp"
-#include "../main/graphicsEditor.hpp"
+#include "main/graphicsEditor.hpp"
 
 class CircleInstrument : public Tool {
 private:
@@ -9,6 +9,6 @@ private:
 public:
   CircleInstrument();
   ~CircleInstrument();
-  void draw(SDL_Surface*,int,int,SDL_Rect) override;
-  void finishDraw(SDL_Surface *, SDL_Rect) override;
+  void draw(int,int,SDL_Rect) override;
+  void finishDraw(SDL_Rect) override;
 };

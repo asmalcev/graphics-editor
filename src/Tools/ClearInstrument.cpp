@@ -2,7 +2,7 @@
 #include "ClearInstrument.hpp"
 #include "main/graphicsEditor.hpp"
 
-void ClearInstrument::finishDraw(SDL_Surface * screen, SDL_Rect bound) {
+void ClearInstrument::finishDraw(SDL_Rect bound) {
   Draw_FillRect(screen, bound.x, bound.y, bound.w, bound.h, mainColor);
   SDL_Flip(screen);
 }
