@@ -8,8 +8,7 @@
 #include "Tools/ClearInstrument.hpp"
 #include "Tools/ImageInstrument.hpp"
 #include "Tools/PipetteInstrument.hpp"
-
-#include <iostream>
+#include "Tools/FillerInstrument.hpp"
 
 Controller::Controller() {
   hoveredObj       = nullptr;
@@ -18,6 +17,7 @@ Controller::Controller() {
   choosenTool      = nullptr;
   mousePressed     = false;
   m_canvas         = nullptr;
+  m_modal          = nullptr;
 
   m_tools.push_back(new PencilInstrument());
   m_tools.push_back(new ErraserInstrument());
@@ -25,11 +25,12 @@ Controller::Controller() {
   m_tools.push_back(new CircleInstrument());
   m_tools.push_back(new RectInstrument());
   m_tools.push_back(new ClearInstrument());
-  // m_tools.push_back(new ImageInstrument());
+  m_tools.push_back(new ImageInstrument());
   m_tools.push_back(new PipetteInstrument());
+  m_tools.push_back(new FillerInstrument());
 }
 
-void Controller::changeFocus(Focused* newObj, bool isInput) {
+void Controller::changeFocus(Focused * newObj, bool isInput) {
   if (focusedObj != newObj) {
     if (focusedObj != nullptr) focusedObj->toggleFocusedDraw();
     focusedObj = newObj;
@@ -39,7 +40,7 @@ void Controller::changeFocus(Focused* newObj, bool isInput) {
   if (!isInput) focusedTextInput = nullptr;
 }
 
-bool Controller::changeHover(Hovered* newObj) {
+bool Controller::changeHover(Hovered * newObj) {
   if (hoveredObj != newObj) {
     if (hoveredObj != nullptr) hoveredObj->toggleHoveredDraw();
     hoveredObj = newObj;
@@ -55,14 +56,21 @@ void Controller::clearHoveredObj() {
   }
 }
 
-void Controller::focusTextInput(TextInput* newObj) {
+void Controller::clearFocusedObj() {
+  if (focusedObj != nullptr) {
+    focusedObj->toggleFocusedDraw();
+    focusedObj = nullptr;
+  }
+}
+
+void Controller::focusTextInput(TextInput * newObj) {
   if (focusedTextInput != newObj)
     focusedTextInput = newObj;
   else
     focusedTextInput = nullptr;
 }
 
-void Controller::clickColorInput(ColorInput* choosedColor) {
+void Controller::clickColorInput(ColorInput * choosedColor) {
   DataModel::getData()->setChoosenColor(choosedColor->getColorValue());
 }
 
@@ -78,7 +86,9 @@ void Controller::readInput(SDL_Event* event) {
     if (sym == SDLK_BACKSPACE) {
       if (!value.empty()) value.pop_back();
     } else {
-      value += sym;
+      if (isprint(sym)) {
+        value += sym;
+      }
     }
     DataModel::getData()->setFilePath(value);
     focusedTextInput->changeValue(value);
@@ -121,7 +131,84 @@ void Controller::readInput(SDL_Event* event) {
   }
 }
 
-void Controller::chooseTool(ComponentName name) {
+Tool* Controller::getTool() {
+  return choosenTool;
+}
+
+void Controller::changeMouseState(bool state) {
+  mousePressed = state;
+}
+
+bool Controller::isMousePressed() {
+  return mousePressed;
+}
+
+void Controller::setCanvas(Canvas * canvas) {
+  if (m_canvas == nullptr) {
+    m_canvas = canvas;
+  }
+}
+
+void Controller::save() {
+  if (m_canvas != nullptr) {
+    SDL_Rect bound = m_canvas->getBound();
+    SDL_Surface * tmp = SDL_CreateRGBSurface(SDL_HWSURFACE |
+      SDL_DOUBLEBUF, bound.w, bound.h, window_scrdepth,
+      screen->format->Rmask, screen->format->Gmask,
+      screen->format->Bmask, screen->format->Amask);
+      SDL_BlitSurface(screen, &bound, tmp, NULL);
+      SDL_SaveBMP(tmp, DataModel::getData()->getFilePath().c_str());
+    SDL_FreeSurface(tmp);
+  }
+}
+
+void Controller::openSaveModal() {
+  if (openedModal == 1) {
+    openedModal = 0;
+    m_modal->close();
+    SDL_Flip(screen);
+  } else {
+    if (m_modal != nullptr) {
+      openedModal = 1;
+      m_modal->setActionBtn(100, 90, 200, 40, (char *) "Save image", ComponentName::ConfirmSaving);
+      m_modal->setCancelBtn(100, 130, 200, 40);
+      m_modal->draw(screen);
+
+      m_modal->addText(84, 12, (char*) "Input relative or absolute path", 18, 0x333333);
+      m_modal->addText(84, 30, (char*) "with name and ends with .bmp", 18, 0x333333);
+      SDL_Flip(screen);
+    }
+  }
+}
+
+void Controller::openImageModal() {
+  if (openedModal == 2) {
+    openedModal = 0;
+    m_modal->close();
+    SDL_Flip(screen);
+  } else {
+    if (m_modal != nullptr) {
+      openedModal = 2;
+      m_modal->setActionBtn(100, 90, 200, 40, (char *) "Open image", ComponentName::ConfirmOpening);
+      m_modal->setCancelBtn(100, 130, 200, 40);
+      m_modal->draw(screen);
+
+      m_modal->addText(84, 12, (char*) "Input relative or absolute path", 18, 0x333333);
+      m_modal->addText(84, 30, (char*) "with name and ends with .bmp", 18, 0x333333);
+      SDL_Flip(screen);
+    }
+  }
+}
+
+void Controller::setModal(Modal * modal) {
+  m_modal = modal;
+}
+
+int Controller::getIndexOfOpenedModal() {
+  return openedModal;
+}
+
+void Controller::buttonClicked(ComponentName name) {
   switch (name) {
     case PencilClass:
       choosenTool = m_tools[0];
@@ -141,71 +228,47 @@ void Controller::chooseTool(ComponentName name) {
     case ClearClass:
       choosenTool = m_tools[5];
       break;
-    // case ImageClass:
-    //   choosenTool = m_tools[6];
-    //   break;
-    case PipetteClass:
+    case ImageClass:
+      clearHoveredObj();
+      clearFocusedObj();
+      openImageModal();
       choosenTool = m_tools[6];
+      break;
+    case PipetteClass:
+      choosenTool = m_tools[7];
+      break;
+    case FillerClass:
+      choosenTool = m_tools[8];
+      break;
+    case SaveClass:
+      clearHoveredObj();
+      clearFocusedObj();
+      openSaveModal();
+      break;
+    case ConfirmSaving:
+      clearHoveredObj();
+      clearFocusedObj();
+      openSaveModal();
+      save();
+      break;
+    case ConfirmOpening:
+      clearHoveredObj();
+      clearFocusedObj();
+      openImageModal();
+      break;
+    case Cancel:
+      clearHoveredObj();
+      clearFocusedObj();
+      if (openedModal == 1) {
+        openSaveModal();
+      } else if (openedModal == 2) {
+        openImageModal();
+      }
       break;
     
     default:
       choosenTool = nullptr;
   }
-}
-
-Tool* Controller::getTool() {
-  return choosenTool;
-}
-
-void Controller::changeMouseState(bool state) {
-  mousePressed = state;
-}
-
-bool Controller::isMousePressed() {
-  return mousePressed;
-}
-
-void Controller::setCanvas(Canvas * canvas) {
-  if (m_canvas == nullptr) {
-    m_canvas = canvas;
-  }
-}
-
-void Controller::save(SDL_Surface * screen) {
-  if (m_canvas != nullptr) {
-    SDL_Rect bound = m_canvas->getBound();
-    SDL_Surface * tmp = SDL_CreateRGBSurface(SDL_HWSURFACE |
-      SDL_DOUBLEBUF, bound.w, bound.h, window_scrdepth,
-      screen->format->Rmask, screen->format->Gmask,
-      screen->format->Bmask, screen->format->Amask);
-      SDL_BlitSurface(screen, &bound, tmp, NULL);
-      SDL_SaveBMP(tmp, DataModel::getData()->getFilePath().c_str());
-    SDL_FreeSurface(tmp);
-  }
-}
-
-void Controller::openSaveModal(SDL_Surface * surf) {
-  if (openedModal == 1) {
-    openedModal = 0;
-    m_modals[0]->close();
-    SDL_Flip(screen);
-  } else {
-    if (m_modals.size() >= 1) {
-      openedModal = 1;
-      m_modals[0]->draw(surf);
-      m_modals[0]->addText(84, 12, (char*) "Input relative or absolute path", 18, 0x333333);
-      m_modals[0]->addText(84, 30, (char*) "with name and ends with .bmp", 18, 0x333333);
-      SDL_Flip(screen);
-    }
-  }
-}
-
-void Controller::addModal(Modal * modal) {
-  m_modals.push_back(modal);
-}
-
-int Controller::getIndexOfOpenedModal() {
-  return openedModal;
 }
 
 Controller* Controller::m_controller = 0;

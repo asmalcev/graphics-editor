@@ -5,10 +5,11 @@
 
 class Button : public Input, public Focused, public Hovered {
 private:
-	char * img;
+	char * content;
+	bool isImageView;
 
 public:
-	Button(int,int,int,int,const style_s*,char*,char*,ComponentName,bool=true);
+	Button(int,int,int,int,const style_s*,char*,char*,ComponentName,bool=true,bool=true);
 	~Button() override;
 	void draw();
 	bool clicked(SDL_Event*);

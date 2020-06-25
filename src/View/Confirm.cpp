@@ -43,8 +43,8 @@ bool Confirm::clicked(SDL_Event * event) {
 		pos.y <= event->button.y && pos.y + pos.h >= event->button.y
 	) {
     Controller::getController()->clearHoveredObj();
-    Controller::getController()->openSaveModal(screen);
-    Controller::getController()->save(screen);
+    Controller::getController()->openSaveModal();
+    Controller::getController()->save();
     return true;
 	}
   return false;

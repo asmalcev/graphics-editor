@@ -1,6 +1,5 @@
 #include "../../../libs/SDL_draw-1.2.13/include/SDL_draw.h"
 #include <SDL/SDL_ttf.h>
-#include <iostream>
 #include "main/graphicsEditor.hpp"
 #include "TextInput.hpp"
 #include "Controller/Controller.hpp"

@@ -4,8 +4,6 @@
 #include "MainWindow.hpp"
 #include "Controller/Controller.hpp"
 
-#include <iostream>
-
 MainWindow::MainWindow() {
 	m_canvas = nullptr;
 	m_toolbar = nullptr;
@@ -30,6 +28,7 @@ void MainWindow::clicked(SDL_Event * event) {
 	if (m_canvas->clicked(event)) return;
 	if (m_toolbar->clicked(event)) return;
 	if (m_palette->clicked(event)) return;
+	Controller::getController()->clearFocusedObj();
 }
 
 void MainWindow::hovered(SDL_Event * event) {

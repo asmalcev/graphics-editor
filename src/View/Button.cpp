@@ -11,12 +11,12 @@ Button::Button(
   int w,
   int h,
   const style_s* btnStyle,
-  char* imgPath,
+  char* content,
   char* tooltip,
   ComponentName className,
-  bool drawNow
-) : Input(x, y, w, h, btnStyle, tooltip, className) {
-  img = imgPath;
+  bool drawNow,
+  bool isImageView
+) : Input(x, y, w, h, btnStyle, tooltip, className), content(content), isImageView(isImageView) {
   isHovered = isFocused = false;
   
   if (drawNow) this->draw();
@@ -39,7 +39,17 @@ void Button::draw() {
     (Uint16) (pos.h - style->shadowOffset),
     style->shadowColor);
   Draw_FillRect(screen, pos.x, pos.y, pos.w, pos.h, style->color);
-  SDL_BlitSurface(SDL_LoadBMP(img), NULL, screen, &pos);
+  if (isImageView) {
+    SDL_BlitSurface(SDL_LoadBMP(content), NULL, screen, &pos);
+  } else {
+    int textHeight, textWidth;
+    TTF_SizeText(TTF_OpenFont("../public/Ubuntu.ttf", style->tooltipTextFontSize), content ,&textWidth, &textHeight);
+    SDL_Rect textPos = {
+      (Sint16) (pos.x + (pos.w - textWidth) / 2),
+      (Sint16) (pos.y + (pos.h - textHeight) / 2),
+      pos.w, pos.h};
+    renderText(screen, textPos, content, style->tooltipTextFontSize, style->tooltipTextColor);
+  }
 }
 
 void Button::drawClicked() {
@@ -55,7 +65,7 @@ bool Button::clicked(SDL_Event* event) {
     Controller::getController()->clearHoveredObj();
     toggleFocusedDraw();
     Controller::getController()->changeFocus(this, false);
-    Controller::getController()->chooseTool(name);
+    Controller::getController()->buttonClicked(name);
     return true;
 	}
   return false;

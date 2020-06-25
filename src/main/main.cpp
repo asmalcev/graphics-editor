@@ -12,8 +12,8 @@
 
 /*
 
-	export CFLAGS="`sdl-config --cflags` -I../../../libs/SDL_draw-1.2.13/include"
-	export LIBS="`sdl-config --libs` ../../../libs/SDL_draw-1.2.13/src/.libs/libSDL_draw.a"
+	export CFLAGS="`sdl-config --cflags` -Ilibs/SDL_draw-1.2.13/include"
+	export LIBS="`sdl-config --libs` libs/SDL_draw-1.2.13/src/../../../libs/SDL_draw-1.2.13/include/SDL_draw.h"
 	g++ main/*.cpp Controller/*.cpp Model/*.cpp View/*.cpp Tools/*.cpp -Wall $CFLAGS $LIBS -lSDL -lSDL_ttf -lSDL_draw -I ./ -o GraphicsEditor && ./GraphicsEditor
 	
 */
@@ -97,7 +97,8 @@ int main(int argc, char *argv[]) {
 		32, 32, 32, 32, &btnStyle, (char*) "../public/image.bmp", (char*) "Insert image", ComponentName::ImageClass);
 	mainWindow.getToolbar()->addButton(
 		64, 32, 32, 32, &btnStyle, (char*) "../public/pipette.bmp", (char*) "Color Picker", ComponentName::PipetteClass);
-	mainWindow.getToolbar()->addSaveButton(96, 32, 64, 32, &btnStyle);
+	mainWindow.getToolbar()->addButton(
+		96, 32, 64, 32, &btnStyle, (char*) "Save", (char*) "Save image", ComponentName::SaveClass, true, false);
 
 	mainWindow.getToolbar()->addTextInput(
 		96, 160, 36, 32, &textInputStyle, (char*) "Line width", std::to_string(DataModel::getData()->getLineWidth()), ComponentName::Line);
@@ -131,13 +132,9 @@ int main(int argc, char *argv[]) {
 		mainWindow.getPalette()->addColorInput((i % 6) * 32, 128 + (i / 6) * 32, 32, 32, &colorInputStyle, colors[i].color, colors[i].value, ComponentName::Color);
 	}
 
-	Modal mws(400, 200, &modalWindowStyle);
-	char * cstr = new char[DataModel::getData()->getFilePath().length() + 1];
-	strcpy(cstr, DataModel::getData()->getFilePath().c_str());
-	mws.setInput(12, 50, 200, 40, (char *) "File path", cstr, ComponentName::FilePath);
-	delete [] cstr;
-	mws.setConfirm(12, 90, 200, 40);
-	Controller::getController()->addModal(&mws);
+	Modal mw(400, 200, &modalWindowStyle);
+	mw.setInput(50, 50, 300, 40);
+	Controller::getController()->setModal(&mw);
 
  	SDL_Flip(screen);
  	while(SDL_WaitEvent(&event)) {
@@ -149,8 +146,8 @@ int main(int argc, char *argv[]) {
  	   		return 0;
 			case SDL_MOUSEBUTTONDOWN:
 				Controller::getController()->changeMouseState(true);
-				if (Controller::getController()->getIndexOfOpenedModal() == 1) {
-					mws.clicked(&event);
+				if (Controller::getController()->getIndexOfOpenedModal() != 0) {
+					mw.clicked(&event);
 				} else {
 					mainWindow.clicked(&event);
 				}
@@ -160,8 +157,8 @@ int main(int argc, char *argv[]) {
 				mainWindow.mouseUp(&event);
 				break;
 			case SDL_MOUSEMOTION:
-				if (Controller::getController()->getIndexOfOpenedModal() == 1) {
-					mws.hovered(&event);
+				if (Controller::getController()->getIndexOfOpenedModal() != 0) {
+					mw.hovered(&event);
 				} else {
 					mainWindow.hovered(&event);
 				}

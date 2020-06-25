@@ -3,13 +3,13 @@
 #include "main/utils.hpp"
 #include "Interfaces/Window.hpp"
 #include "View/TextInput.hpp"
-#include "View/Confirm.hpp"
+#include "View/Button.hpp"
 
 class Modal : public Window {
 protected:
   SDL_Surface * tmp;
   TextInput * txtInput;
-  Confirm * m_confirm;
+  Button * actionBtn, * cancelBtn;
 public:
   Modal(int,int,const style_s *);
   ~Modal();
@@ -17,6 +17,7 @@ public:
   void close();
 	bool clicked(SDL_Event *) override;
 	bool hovered(SDL_Event *) override;
-  void setInput(int,int,int,int,char *,char *,ComponentName);
-  void setConfirm(int,int,int,int);
+  void setInput(int,int,int,int);
+  void setActionBtn(int,int,int,int,char *,ComponentName);
+  void setCancelBtn(int,int,int,int);
 };

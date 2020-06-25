@@ -25,9 +25,7 @@ public:
 enum ComponentName {
   None,
   Line,
-  R,
-  G,
-  B,
+  R, G, B,
   Color,
   PencilClass,
   ErraserClass,
@@ -39,7 +37,10 @@ enum ComponentName {
   ImageClass,
   PipetteClass,
   SaveClass,
-  FilePath
+  FilePath,
+  ConfirmSaving,
+  ConfirmOpening,
+  Cancel
 };
 
 constexpr Uint32 mainColor = 0xEDF2F4;

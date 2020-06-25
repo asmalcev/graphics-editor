@@ -8,12 +8,9 @@ Toolbar::Toolbar(
   int w,
   int h,
   const style_s* windowStyle
-) : Window(x, y, w, h, windowStyle){
-  saveBtn = nullptr;
-}
+) : Window(x, y, w, h, windowStyle) {}
 
 Toolbar::~Toolbar() {
-  delete saveBtn;
   for (auto it = btns.begin(); it != btns.end(); it++) delete *it;
   for (auto it = textInputs.begin(); it != textInputs.end(); it++) delete *it;
 }
@@ -26,9 +23,11 @@ void Toolbar::addButton(
   const style_s* btnStyle,
   char* imgPath,
   char* tooltip,
-  ComponentName name
+  ComponentName name,
+  bool drawNow,
+  bool isImageView
 ) {
-  btns.push_back(new Button(pos.x + x, pos.y + y, w, h, btnStyle, imgPath, tooltip, name));
+  btns.push_back(new Button(pos.x + x, pos.y + y, w, h, btnStyle, imgPath, tooltip, name, drawNow, isImageView));
 }
 
 void Toolbar::addTextInput(
@@ -55,9 +54,6 @@ bool Toolbar::clicked(SDL_Event* event) {
     for (size_t i = 0; i < textInputs.size(); i++)
       if (textInputs[i]->clicked(event)) break;
 
-    if (saveBtn != nullptr)
-      saveBtn->clicked(event);
-
     return true;
 	}
   return false;
@@ -74,18 +70,9 @@ bool Toolbar::hovered(SDL_Event* event) {
     for (size_t i = 0; i < textInputs.size(); i++)
       if (textInputs[i]->hovered(event)) return true;
     
-    if (saveBtn != nullptr)
-      saveBtn->hovered(event);
-    
     return true;
 	}
   return false;
-}
-
-void Toolbar::addSaveButton(int x, int y, int w, int h, const style_s * btnStyle) {
-  if (saveBtn == nullptr) {
-    saveBtn = new Save(pos.x + x, pos.y + y, w, h, btnStyle);
-  }
 }
 
 void Toolbar::draw(SDL_Surface * surf) {

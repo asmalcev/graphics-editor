@@ -15,14 +15,14 @@ private:
   Focused * focusedObj;
   Hovered * hoveredObj;
   TextInput * focusedTextInput;
-  Uint32 choosedColor;
   Tool * choosenTool;
-  Controller();
-  std::vector<Tool *> m_tools;
-  bool mousePressed;
   Canvas * m_canvas;
-  std::vector<Modal *> m_modals;
+  Modal * m_modal;
+  std::vector<Tool *> m_tools;
   int openedModal;
+  bool mousePressed;
+
+  Controller();
 
 public:
   static Controller* getController() {
@@ -31,21 +31,32 @@ public:
     return m_controller;
   }
   
-  void changeFocus(Focused*,bool);
+  // Focus control
+  void changeFocus(Focused*,bool=false);
+  void clearFocusedObj();
+  void focusTextInput(TextInput*);
+  
+  // Hover control
   bool changeHover(Hovered*);
   void clearHoveredObj();
-  void focusTextInput(TextInput*);
+
+  // User input
   void clickColorInput(ColorInput*);
   bool waitingForInput();
   void readInput(SDL_Event*);
-  void chooseTool(ComponentName);
+
+  // Modal control
+  void setModal(Modal *);
+  void save();
+  void openSaveModal();
+  void openImageModal();
+  int getIndexOfOpenedModal();
+
+  // Other
   Tool* getTool();
   void changeMouseState(bool);
   bool isMousePressed();
-  void save(SDL_Surface *);
-  void openSaveModal(SDL_Surface *);
   void setCanvas(Canvas *);
-  void addModal(Modal *);
-  int getIndexOfOpenedModal();
+  void buttonClicked(ComponentName);
 
 };
