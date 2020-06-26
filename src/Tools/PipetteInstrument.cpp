@@ -9,5 +9,12 @@ void PipetteInstrument::draw(int x, int y, SDL_Rect bound) {
 }
 
 void PipetteInstrument::finishDraw(SDL_Rect bound) {
-  DataModel::getData()->setChoosenColor(getpixel(screen, pos.x, pos.y));
+  if (
+    pos.x >= bound.x && pos.x < bound.w + bound.x &&
+    pos.y >= bound.y && pos.y < bound.h + bound.y
+  ) {
+    DataModel::getData()->setChoosenColor(getpixel(screen, pos.x, pos.y));
+    pos.x = 0;
+    pos.y = 0;
+  }
 }

@@ -45,7 +45,27 @@ int main(int argc, char *argv[]) {
 	colors.push_back(ColorInputData(0xF44336, (char*) "#F44336"));
 	colors.push_back(ColorInputData(0xFFFFFF, (char*) "#FFFFFF"));
 	colors.push_back(ColorInputData(0x000000, (char*) "#000000"));
-	// colors.push_back(ColorInputData(0x, (char*) "#"));
+	colors.push_back(ColorInputData(0x1A237E, (char*) "#1A237E"));
+	colors.push_back(ColorInputData(0xE91E63, (char*) "#E91E63"));
+	colors.push_back(ColorInputData(0x607D8B, (char*) "#607D8B"));
+	colors.push_back(ColorInputData(0xBF360C, (char*) "#BF360C"));
+	colors.push_back(ColorInputData(0x26C6DA, (char*) "#26C6DA"));
+	colors.push_back(ColorInputData(0x009688, (char*) "#009688"));
+	colors.push_back(ColorInputData(0xC5CAE9, (char*) "#C5CAE9"));
+	colors.push_back(ColorInputData(0xE6EE9C, (char*) "#E6EE9C"));
+	colors.push_back(ColorInputData(0x827717, (char*) "#827717"));
+	colors.push_back(ColorInputData(0xE0E0E0, (char*) "#E0E0E0"));
+	colors.push_back(ColorInputData(0xBA68C8, (char*) "#BA68C8"));
+	colors.push_back(ColorInputData(0xD500F9, (char*) "#D500F9"));
+	colors.push_back(ColorInputData(0xFF1744, (char*) "#FF1744"));
+	colors.push_back(ColorInputData(0x76FF03, (char*) "#76FF03"));
+	colors.push_back(ColorInputData(0x304FFE, (char*) "#304FFE"));
+	colors.push_back(ColorInputData(0x1DE9B6, (char*) "#1DE9B6"));
+	colors.push_back(ColorInputData(0xE040FB, (char*) "#E040FB"));
+	colors.push_back(ColorInputData(0xFF7043, (char*) "#FF7043"));
+	colors.push_back(ColorInputData(0x880E4F, (char*) "#880E4F"));
+	colors.push_back(ColorInputData(0x6A1B9A, (char*) "#6A1B9A"));
+	colors.push_back(ColorInputData(0xd50000, (char*) "#d50000"));
 
  	if (SDL_Init(SDL_INIT_VIDEO)) {
 		std::cout << "Can't init SDL" << std::endl;
