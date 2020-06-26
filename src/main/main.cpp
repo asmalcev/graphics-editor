@@ -10,14 +10,6 @@
 #include "View/Modal.hpp"
 #include "utils.hpp"
 
-/*
-
-	export CFLAGS="`sdl-config --cflags` -Ilibs/SDL_draw-1.2.13/include"
-	export LIBS="`sdl-config --libs` libs/SDL_draw-1.2.13/src/libs/SDL_draw-1.2.13/include/SDL_draw.h"
-	g++ main/*.cpp Controller/*.cpp Model/*.cpp View/*.cpp Tools/*.cpp -Wall $CFLAGS $LIBS -lSDL -lSDL_ttf -lSDL_draw -I ./ -o GraphicsEditor && ./GraphicsEditor
-	
-*/
-
 class ColorInputData {
 public:
 	Uint32 color;
