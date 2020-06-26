@@ -35,6 +35,7 @@ enum ComponentName {
   LineClass,
   ClearClass,
   ImageClass,
+  OpenImageClass,
   PipetteClass,
   SaveClass,
   FilePath,

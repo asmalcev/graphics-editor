@@ -108,9 +108,11 @@ int main(int argc, char *argv[]) {
 	mainWindow.getToolbar()->addButton(
 		32, 32, 32, 32, &btnStyle, (char*) "../public/image.bmp", (char*) "Insert image (I)", ComponentName::ImageClass);
 	mainWindow.getToolbar()->addButton(
-		64, 32, 32, 32, &btnStyle, (char*) "../public/pipette.bmp", (char*) "Color Picker (V)", ComponentName::PipetteClass);
+		64, 32, 32, 32, &btnStyle, (char*) "../public/image.bmp", (char*) "Open image (O)", ComponentName::OpenImageClass);
 	mainWindow.getToolbar()->addButton(
-		96, 32, 64, 32, &btnStyle, (char*) "Save", (char*) "Save image (S)", ComponentName::SaveClass, true, false);
+		96, 32, 32, 32, &btnStyle, (char*) "../public/pipette.bmp", (char*) "Color Picker (V)", ComponentName::PipetteClass);
+	mainWindow.getToolbar()->addButton(
+		128, 32, 64, 32, &btnStyle, (char*) "Save", (char*) "Save image (S)", ComponentName::SaveClass, true, false);
 
 	mainWindow.getToolbar()->addTextInput(
 		96, 160, 36, 32, &textInputStyle, (char*) "Line width", std::to_string(DataModel::getData()->getLineWidth()), ComponentName::Line);

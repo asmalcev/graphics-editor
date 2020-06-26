@@ -7,6 +7,7 @@
 #include "Tools/RectInstrument.hpp"
 #include "Tools/ClearInstrument.hpp"
 #include "Tools/ImageInstrument.hpp"
+#include "Tools/OpenImageInstrument.hpp"
 #include "Tools/PipetteInstrument.hpp"
 #include "Tools/FillerInstrument.hpp"
 
@@ -30,6 +31,7 @@ Controller::Controller() {
   m_tools.push_back(new ImageInstrument());
   m_tools.push_back(new PipetteInstrument());
   m_tools.push_back(new FillerInstrument());
+  m_tools.push_back(new OpenImageInstrument());
 }
 
 void Controller::changeFocus(Focused * newObj, bool isInput) {
@@ -172,6 +174,9 @@ void Controller::keyEvents(SDL_Event * event) {
   case SDLK_i:
     buttonClicked(ComponentName::ImageClass);
     break;
+  case SDLK_o:
+    buttonClicked(ComponentName::OpenImageClass);
+    break;
   case SDLK_s:
     buttonClicked(ComponentName::SaveClass);
     break;
@@ -284,6 +289,12 @@ void Controller::buttonClicked(ComponentName name) {
       clearFocusedObj();
       openImageModal();
       choosenTool = m_tools[6];
+      break;
+    case OpenImageClass:
+      clearHoveredObj();
+      clearFocusedObj();
+      openImageModal();
+      choosenTool = m_tools[9];
       break;
     case PipetteClass:
       choosenTool = m_tools[7];

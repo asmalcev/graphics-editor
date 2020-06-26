@@ -3,6 +3,7 @@
 #include "main/graphicsEditor.hpp"
 
 class ImageInstrument : public Tool {
+protected:
   Point pos;
 public:
   void draw(int,int,SDL_Rect) override;
