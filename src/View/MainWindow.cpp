@@ -1,5 +1,5 @@
 #include <vector>
-#include "../../../libs/SDL_draw-1.2.13/include/SDL_draw.h"
+#include "libs/SDL_draw-1.2.13/include/SDL_draw.h"
 #include "main/graphicsEditor.hpp"
 #include "MainWindow.hpp"
 #include "Controller/Controller.hpp"

@@ -1,4 +1,4 @@
-#include "../../../libs/SDL_draw-1.2.13/include/SDL_draw.h"
+#include "libs/SDL_draw-1.2.13/include/SDL_draw.h"
 #include "Model/DataModel.hpp"
 #include "FillerInstrument.hpp"
 #include "Stack/Stack.hpp"
@@ -29,7 +29,7 @@ void FillerInstrument::finishDraw(SDL_Rect bound) {
       y1++;
       spanLeft = spanRight = 0;
 
-      while (y1 < bound.h && getpixel(screen, p.x, y1) == oldColor) {
+      while (y1 < bound.h + pos.y && getpixel(screen, p.x, y1) == oldColor) {
         Draw_Pixel(screen, p.x, y1, newColor);
         if (spanLeft == 0 && p.x > 0 && getpixel(screen, p.x - 1, y1) == oldColor) {
           st.push(Point(p.x - 1, y1));
@@ -38,10 +38,10 @@ void FillerInstrument::finishDraw(SDL_Rect bound) {
           spanLeft = 0;
         }
 
-        if (spanRight == 0 && p.x < bound.w && getpixel(screen, p.x + 1, y1) == oldColor) {
+        if (spanRight == 0 && p.x < bound.w + pos.x && getpixel(screen, p.x + 1, y1) == oldColor) {
           st.push(Point(p.x + 1, y1));
           spanRight = 1;
-        } else if (spanRight == 1 && p.x < bound.w && getpixel(screen, p.x + 1, y1) != oldColor) {
+        } else if (spanRight == 1 && p.x < bound.w + pos.x && getpixel(screen, p.x + 1, y1) != oldColor) {
           spanRight = 0;
         }
 
@@ -50,5 +50,6 @@ void FillerInstrument::finishDraw(SDL_Rect bound) {
     }
     pos.x = 0;
     pos.y = 0;
+    SDL_Flip(screen);
   }
 }

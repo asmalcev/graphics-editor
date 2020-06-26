@@ -1,4 +1,4 @@
-#include "../../../libs/SDL_draw-1.2.13/include/SDL_draw.h"
+#include "libs/SDL_draw-1.2.13/include/SDL_draw.h"
 #include "PencilInstrument.hpp"
 #include "Model/DataModel.hpp"
 #include "main/graphicsEditor.hpp"

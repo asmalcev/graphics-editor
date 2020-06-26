@@ -5,7 +5,7 @@
 #include "graphicsEditor.hpp"
 #include "Model/DataModel.hpp"
 #include "Controller/Controller.hpp"
-#include "../../../libs/SDL_draw-1.2.13/include/SDL_draw.h"
+#include "libs/SDL_draw-1.2.13/include/SDL_draw.h"
 #include "View/MainWindow.hpp"
 #include "View/Modal.hpp"
 #include "utils.hpp"
@@ -13,7 +13,7 @@
 /*
 
 	export CFLAGS="`sdl-config --cflags` -Ilibs/SDL_draw-1.2.13/include"
-	export LIBS="`sdl-config --libs` libs/SDL_draw-1.2.13/src/../../../libs/SDL_draw-1.2.13/include/SDL_draw.h"
+	export LIBS="`sdl-config --libs` libs/SDL_draw-1.2.13/src/libs/SDL_draw-1.2.13/include/SDL_draw.h"
 	g++ main/*.cpp Controller/*.cpp Model/*.cpp View/*.cpp Tools/*.cpp -Wall $CFLAGS $LIBS -lSDL -lSDL_ttf -lSDL_draw -I ./ -o GraphicsEditor && ./GraphicsEditor
 	
 */
@@ -80,25 +80,25 @@ int main(int argc, char *argv[]) {
 	Controller::getController()->setCanvas(mainWindow.getCanvas());
 
 	mainWindow.getToolbar()->addButton(
-		0, 0, 32, 32, &btnStyle, (char*) "../public/pencil.bmp", (char*) "Pencil", ComponentName::PencilClass);
+		0, 0, 32, 32, &btnStyle, (char*) "../public/pencil.bmp", (char*) "Pencil (P)", ComponentName::PencilClass);
 	mainWindow.getToolbar()->addButton(
-		32, 0, 32, 32, &btnStyle, (char*) "../public/erraser.bmp", (char*) "Eraser", ComponentName::ErraserClass);
+		32, 0, 32, 32, &btnStyle, (char*) "../public/erraser.bmp", (char*) "Eraser (E)", ComponentName::ErraserClass);
 	mainWindow.getToolbar()->addButton(
-		64, 0, 32, 32, &btnStyle, (char*) "../public/filler.bmp", (char*) "Filler", ComponentName::FillerClass);
+		64, 0, 32, 32, &btnStyle, (char*) "../public/filler.bmp", (char*) "Filler (F)", ComponentName::FillerClass);
 	mainWindow.getToolbar()->addButton(
-		96, 0, 32, 32, &btnStyle, (char*) "../public/circle.bmp", (char*) "Circle", ComponentName::CircleClass);
+		96, 0, 32, 32, &btnStyle, (char*) "../public/circle.bmp", (char*) "Circle (C)", ComponentName::CircleClass);
 	mainWindow.getToolbar()->addButton(
-		128, 0, 32, 32, &btnStyle, (char*) "../public/square.bmp", (char*) "Rect", ComponentName::RectClass);
+		128, 0, 32, 32, &btnStyle, (char*) "../public/square.bmp", (char*) "Rect (R)", ComponentName::RectClass);
 	mainWindow.getToolbar()->addButton(
-		160, 0, 32, 32, &btnStyle, (char*) "../public/line.bmp", (char*) "Line", ComponentName::LineClass);
+		160, 0, 32, 32, &btnStyle, (char*) "../public/line.bmp", (char*) "Line (L)", ComponentName::LineClass);
 	mainWindow.getToolbar()->addButton(
-		0, 32, 32, 32, &btnStyle, (char*) "../public/clear.bmp", (char*) "Clear canvas", ComponentName::ClearClass);
+		0, 32, 32, 32, &btnStyle, (char*) "../public/clear.bmp", (char*) "Clear canvas (X)", ComponentName::ClearClass);
 	mainWindow.getToolbar()->addButton(
-		32, 32, 32, 32, &btnStyle, (char*) "../public/image.bmp", (char*) "Insert image", ComponentName::ImageClass);
+		32, 32, 32, 32, &btnStyle, (char*) "../public/image.bmp", (char*) "Insert image (I)", ComponentName::ImageClass);
 	mainWindow.getToolbar()->addButton(
-		64, 32, 32, 32, &btnStyle, (char*) "../public/pipette.bmp", (char*) "Color Picker", ComponentName::PipetteClass);
+		64, 32, 32, 32, &btnStyle, (char*) "../public/pipette.bmp", (char*) "Color Picker (V)", ComponentName::PipetteClass);
 	mainWindow.getToolbar()->addButton(
-		96, 32, 64, 32, &btnStyle, (char*) "Save", (char*) "Save image", ComponentName::SaveClass, true, false);
+		96, 32, 64, 32, &btnStyle, (char*) "Save", (char*) "Save image (S)", ComponentName::SaveClass, true, false);
 
 	mainWindow.getToolbar()->addTextInput(
 		96, 160, 36, 32, &textInputStyle, (char*) "Line width", std::to_string(DataModel::getData()->getLineWidth()), ComponentName::Line);
@@ -164,19 +164,18 @@ int main(int argc, char *argv[]) {
 				}
 				break;
 			case SDL_KEYDOWN:
-				if (Controller::getController()->waitingForInput())
+				if (Controller::getController()->waitingForInput()) {
 					Controller::getController()->readInput(&event);
+				} else {
+					Controller::getController()->keyEvents(&event);
+				}
 				break;
 		}
-
-    // switch (event.key.keysym.sym) {
-		// 	default:
-		// 		break;
-    // }
  	}
 
 	TTF_Quit();
  	SDL_Quit();
 	delete Controller::getController();
+	delete DataModel::getData();
  	return 2;
 }

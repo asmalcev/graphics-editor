@@ -32,18 +32,19 @@ public:
   }
   
   // Focus control
-  void changeFocus(Focused*,bool=false);
+  void changeFocus(Focused *,bool=false);
   void clearFocusedObj();
-  void focusTextInput(TextInput*);
+  void focusTextInput(TextInput *);
   
   // Hover control
-  bool changeHover(Hovered*);
+  bool changeHover(Hovered *);
   void clearHoveredObj();
 
   // User input
-  void clickColorInput(ColorInput*);
+  void clickColorInput(ColorInput *);
   bool waitingForInput();
-  void readInput(SDL_Event*);
+  void readInput(SDL_Event *);
+  void keyEvents(SDL_Event *);
 
   // Modal control
   void setModal(Modal *);

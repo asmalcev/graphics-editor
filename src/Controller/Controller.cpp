@@ -10,6 +10,8 @@
 #include "Tools/PipetteInstrument.hpp"
 #include "Tools/FillerInstrument.hpp"
 
+#include <iostream>
+
 Controller::Controller() {
   hoveredObj       = nullptr;
   focusedObj       = nullptr;
@@ -95,11 +97,17 @@ void Controller::readInput(SDL_Event* event) {
   } else {
     int value = std::stoi(focusedTextInput->getValue());
 
-    if (sym == SDLK_BACKSPACE) {
+    if (sym == SDLK_DOWN) {
+      if (value > 0) value--;
+    } else if (sym == SDLK_UP) {
+      value++;
+    } else if (sym == SDLK_LEFT) {
+      value = 0;
+    } else if (sym == SDLK_RIGHT) {
+      value = 256;
+    } else if (sym == SDLK_BACKSPACE) {
       value /= 10;
-    }
-
-    if (sym >= 48 && sym <= 57) {
+    } else if (sym >= 48 && sym <= 57) {
       value = value * 10 + sym - 48;
     }
 
@@ -130,6 +138,49 @@ void Controller::readInput(SDL_Event* event) {
     focusedTextInput->changeValue(std::to_string(value));
   }
 }
+
+void Controller::keyEvents(SDL_Event * event) {
+  SDLKey sym = event->key.keysym.sym;
+  switch (sym) {
+  case SDLK_p:
+    buttonClicked(ComponentName::PencilClass);
+    break;
+  case SDLK_f:
+    buttonClicked(ComponentName::FillerClass);
+    break;
+  case SDLK_e:
+    buttonClicked(ComponentName::ErraserClass);
+    break;
+  case SDLK_ESCAPE:
+    buttonClicked(ComponentName::Cancel);
+    break;
+  case SDLK_r:
+    buttonClicked(ComponentName::RectClass);
+    break;
+  case SDLK_l:
+    buttonClicked(ComponentName::LineClass);
+    break;
+  case SDLK_c:
+    buttonClicked(ComponentName::CircleClass);
+    break;
+  case SDLK_x:
+    buttonClicked(ComponentName::ClearClass);
+    break;
+  case SDLK_v:
+    buttonClicked(ComponentName::PipetteClass);
+    break;
+  case SDLK_i:
+    buttonClicked(ComponentName::ImageClass);
+    break;
+  case SDLK_s:
+    buttonClicked(ComponentName::SaveClass);
+    break;
+  
+  default:
+    break;
+  }
+}
+
 
 Tool* Controller::getTool() {
   return choosenTool;

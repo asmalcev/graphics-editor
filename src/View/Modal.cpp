@@ -1,4 +1,4 @@
-#include "../../../libs/SDL_draw-1.2.13/include/SDL_draw.h"
+#include "libs/SDL_draw-1.2.13/include/SDL_draw.h"
 #include "Controller/Controller.hpp"
 #include "Modal.hpp"
 #include "Model/DataModel.hpp"
