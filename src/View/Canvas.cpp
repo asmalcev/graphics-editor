@@ -42,11 +42,17 @@ bool Canvas::hovered(SDL_Event * event) {
 }
 
 bool Canvas::mouseUp(SDL_Event * event) {
-  Tool * m_tool = Controller::getController()->getTool();
-  if (m_tool != NULL) {
-    m_tool->finishDraw(pos);
+  if (
+		pos.x <= event->button.x && pos.x + pos.w >= event->button.x &&
+		pos.y <= event->button.y && pos.y + pos.h >= event->button.y
+	) {
+    Tool * m_tool = Controller::getController()->getTool();
+    if (m_tool != NULL) {
+      m_tool->finishDraw(pos);
+    }
+    return true;
   }
-  return true;
+  return false;
 }
 
 void Canvas::draw(SDL_Surface * surf) {

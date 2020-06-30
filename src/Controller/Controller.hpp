@@ -16,7 +16,6 @@ private:
   Hovered * hoveredObj;
   TextInput * focusedTextInput;
   Tool * choosenTool;
-  Canvas * m_canvas;
   Modal * m_modal;
   std::vector<Tool *> m_tools;
   int openedModal;
@@ -57,7 +56,7 @@ public:
   Tool* getTool();
   void changeMouseState(bool);
   bool isMousePressed();
-  void setCanvas(Canvas *);
+  void setCanvasParams(Canvas *);
   void buttonClicked(ComponentName);
 
 };

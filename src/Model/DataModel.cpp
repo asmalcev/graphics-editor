@@ -8,6 +8,11 @@ DataModel::DataModel() {
   Gvalue = 235;
   Bvalue = 59;
   filePath = "../example.bmp";
+  canvasSurf = nullptr;
+}
+
+DataModel::~DataModel() {
+  SDL_FreeSurface(canvasSurf);
 }
 
 void DataModel::setLineWidth(int newValue) {
@@ -78,6 +83,14 @@ void DataModel::setFilePath(std::string newFilePath) {
 
 std::string DataModel::getFilePath() {
   return filePath;
+}
+
+void DataModel::setCanvasSurface(SDL_Surface * canvas) {
+  canvasSurf = canvas;
+}
+
+SDL_Surface * DataModel::getCanvasSurface() {
+  return canvasSurf;
 }
 
 DataModel* DataModel::m_dataModel = 0;

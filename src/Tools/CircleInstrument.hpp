@@ -4,11 +4,9 @@
 
 class CircleInstrument : public Tool {
 private:
-  Point * firstPoint;
-  Point * secondPoint;
+  Point firstPoint;
+  Point secondPoint;
 public:
-  CircleInstrument();
-  ~CircleInstrument();
   void draw(int,int,SDL_Rect) override;
   void finishDraw(SDL_Rect) override;
 };

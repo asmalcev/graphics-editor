@@ -14,7 +14,7 @@ class Point {
 public:
   int x;
   int y;
-  Point() : x(0), y(0) {}
+  Point() : x(-1), y(-1) {}
   Point(int x, int y) : x(x), y(y) {}
   Point(const Point & other) {
     x = other.x;

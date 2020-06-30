@@ -89,7 +89,7 @@ int main(int argc, char *argv[]) {
 	MainWindow mainWindow;
 	mainWindow.draw(screen);
 
-	Controller::getController()->setCanvas(mainWindow.getCanvas());
+	Controller::getController()->setCanvasParams(mainWindow.getCanvas());
 
 	mainWindow.getToolbar()->addButton(
 		0, 0, 32, 32, &btnStyle, (char*) "../public/pencil.bmp", (char*) "Pencil (P)", ComponentName::PencilClass);

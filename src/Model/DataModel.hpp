@@ -7,19 +7,22 @@
 class DataModel {
 private:
   static DataModel * m_dataModel;
-  int lineWidth, Rvalue, Gvalue, Bvalue;
-  Uint32 choosenColor;
   DataModel();
-  std::vector<Observer *> colorListeners;
   void notifyColorListeners();
+
+  int lineWidth, Rvalue, Gvalue, Bvalue;
+  std::vector<Observer *> colorListeners;
   std::string filePath;
+  Uint32 choosenColor;
+  SDL_Surface * canvasSurf;
 
 public:
-  static DataModel* getData() {
+  static DataModel * getData() {
     if(!m_dataModel)           
       m_dataModel = new DataModel();
     return m_dataModel;
   }
+  ~DataModel();
 
   void setLineWidth(int);
   int getLineWidth();
@@ -31,8 +34,10 @@ public:
   int getRvalue();
   int getGvalue();
   int getBvalue();
-  void addColorListener(Observer*);
+  void addColorListener(Observer *);
   void setFilePath(std::string);
   std::string getFilePath();
+  void setCanvasSurface(SDL_Surface *);
+  SDL_Surface * getCanvasSurface();
 
 };

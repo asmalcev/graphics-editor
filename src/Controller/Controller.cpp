@@ -11,15 +11,12 @@
 #include "Tools/PipetteInstrument.hpp"
 #include "Tools/FillerInstrument.hpp"
 
-#include <iostream>
-
 Controller::Controller() {
   hoveredObj       = nullptr;
   focusedObj       = nullptr;
   focusedTextInput = nullptr;
   choosenTool      = nullptr;
   mousePressed     = false;
-  m_canvas         = nullptr;
   m_modal          = nullptr;
 
   m_tools.push_back(new PencilInstrument());
@@ -199,22 +196,23 @@ bool Controller::isMousePressed() {
   return mousePressed;
 }
 
-void Controller::setCanvas(Canvas * canvas) {
-  if (m_canvas == nullptr) {
-    m_canvas = canvas;
+void Controller::setCanvasParams(Canvas * canvas) {
+  if (DataModel::getData()->getCanvasSurface() == nullptr) {
+    SDL_Rect bound = canvas->getBound();
+    SDL_Surface * surf = SDL_CreateRGBSurface(SDL_HWSURFACE |
+      SDL_DOUBLEBUF, bound.w, bound.h, window_scrdepth,
+      screen->format->Rmask, screen->format->Gmask,
+      screen->format->Bmask, screen->format->Amask);
+    SDL_BlitSurface(screen, &bound, surf, NULL);
+
+    DataModel::getData()->setCanvasSurface(surf);
   }
 }
 
 void Controller::save() {
-  if (m_canvas != nullptr) {
-    SDL_Rect bound = m_canvas->getBound();
-    SDL_Surface * tmp = SDL_CreateRGBSurface(SDL_HWSURFACE |
-      SDL_DOUBLEBUF, bound.w, bound.h, window_scrdepth,
-      screen->format->Rmask, screen->format->Gmask,
-      screen->format->Bmask, screen->format->Amask);
-      SDL_BlitSurface(screen, &bound, tmp, NULL);
-      SDL_SaveBMP(tmp, DataModel::getData()->getFilePath().c_str());
-    SDL_FreeSurface(tmp);
+  SDL_Surface * surf = DataModel::getData()->getCanvasSurface();
+  if (surf != nullptr) {
+    SDL_SaveBMP(surf, DataModel::getData()->getFilePath().c_str());
   }
 }
 
@@ -265,6 +263,7 @@ int Controller::getIndexOfOpenedModal() {
 }
 
 void Controller::buttonClicked(ComponentName name) {
+  clearHoveredObj();
   switch (name) {
     case PencilClass:
       choosenTool = m_tools[0];
@@ -285,13 +284,11 @@ void Controller::buttonClicked(ComponentName name) {
       choosenTool = m_tools[5];
       break;
     case ImageClass:
-      clearHoveredObj();
       clearFocusedObj();
       openImageModal();
       choosenTool = m_tools[6];
       break;
     case OpenImageClass:
-      clearHoveredObj();
       clearFocusedObj();
       openImageModal();
       choosenTool = m_tools[9];
@@ -303,23 +300,19 @@ void Controller::buttonClicked(ComponentName name) {
       choosenTool = m_tools[8];
       break;
     case SaveClass:
-      clearHoveredObj();
       clearFocusedObj();
       openSaveModal();
       break;
     case ConfirmSaving:
-      clearHoveredObj();
       clearFocusedObj();
       openSaveModal();
       save();
       break;
     case ConfirmOpening:
-      clearHoveredObj();
       clearFocusedObj();
       openImageModal();
       break;
     case Cancel:
-      clearHoveredObj();
       clearFocusedObj();
       if (openedModal == 1) {
         openSaveModal();

@@ -1,15 +1,14 @@
 #include "libs/SDL_draw-1.2.13/include/SDL_draw.h"
 #include "Model/DataModel.hpp"
 #include "ImageInstrument.hpp"
+#include "main/utils.hpp"
 #include <unistd.h>
 #include <regex>
 
 void ImageInstrument::draw(int x, int y, SDL_Rect bound) {
+  updateCanvasScreen(&bound);
   pos.x = x;
   pos.y = y;
-}
-
-void ImageInstrument::finishDraw(SDL_Rect bound) {
   if (
     pos.x >= bound.x && pos.x < bound.w + bound.x &&
     pos.y >= bound.y && pos.y < bound.h + bound.y
@@ -39,7 +38,17 @@ void ImageInstrument::finishDraw(SDL_Rect bound) {
       SDL_BlitSurface(img, &posFromTake, screen, &posToPlace);
       SDL_Flip(screen);
     }
+
+  }
+}
+
+void ImageInstrument::finishDraw(SDL_Rect bound) {
+  if (
+    pos.x >= bound.x && pos.x < bound.w + bound.x &&
+    pos.y >= bound.y && pos.y < bound.h + bound.y
+  ) {
     pos.x = 0;
     pos.y = 0;
+    updateCanvasSurface(&bound);
   }
 }
